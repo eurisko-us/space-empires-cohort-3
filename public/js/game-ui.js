@@ -30,11 +30,11 @@ function updateBoard(board) {
             cell.className = 'boardSpace';
 
             if (spaceValue === 1) {
-                cell.style.backgroundColor = 'red';
+                cell.style.backgroundColor = 'orange';
             } else if (spaceValue === 2)  {
-                cell.style.backgroundColor = 'blue';
+                cell.style.backgroundColor = 'purple';
             } else {
-                cell.style.backgroundColor = 'black';
+                cell.style.backgroundColor = 'gray';
             }
         }
     }
