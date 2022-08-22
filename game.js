@@ -14,9 +14,9 @@ class Game {
 
                 socket.emit('gameState', { 
                     gameState: this.state
-                });        
+                });
             }
-        }, 1000);  
+        }, 1000);
     }
 
     generateRandomGameState() {
@@ -32,9 +32,13 @@ class Game {
         }
 
         for(let i = 0; i < board.numRows; i++) {
-            for(let j = 0; j < board.numCols; j++) {        
-                let r = this.getRandomInteger(1, 20);
-                board.spaces[i][j] = r;
+            for(let j = 0; j < board.numCols; j++) {
+                if((i === 0 || i === 1 || i === board.numRows - 1 || i === board.numRows - 2) && (j === 0 || j === 1 || j === board.numCols - 1 || j === board.numCols - 2)) {
+                    board.spaces[i][j] = 0;
+                } else {
+                    let r = this.getRandomInteger(1, 20);
+                    board.spaces[i][j] = r;
+                }
             }
         }    
 
