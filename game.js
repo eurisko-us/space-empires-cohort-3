@@ -21,8 +21,8 @@ class Game {
 
     generateRandomGameState() {
         let board = {
-            numRows: 20,
-            numCols: 20,
+            numRows: 10,
+            numCols: 15,
             spaces: []
         };
 
@@ -48,7 +48,7 @@ class Game {
     getRandomInteger(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-
+        
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 }

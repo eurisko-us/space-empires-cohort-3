@@ -25,17 +25,42 @@ function updateBoard(board) {
 
         for(let j = 0; j < board.numCols; j++) {
             let spaceValue = board.spaces[i][j];
+            if(i === 0 || i === 1){
+                if(j === 0 || j === 1){
+                    spaceValue = -1;
+                }
+                else if (j === board.numCols - 1 || j === board.numCols - 2){
+                    spaceValue = -1;
+                }
+            }
+            if (i === board.numRows - 2 || i === board.numRows - 1){
+                if (j === 0 || j === 1){
+                    spaceValue = -1;
+                }
+                else if (j === board.numCols - 1 || j === board.numCols - 2){
+                    spaceValue = -1;
+                }
+            }
 
             let cell = row.insertCell();
             cell.className = 'boardSpace';
-
-            if (spaceValue === 1) {
-                cell.style.backgroundColor = 'red';
-            } else if (spaceValue === 2)  {
-                cell.style.backgroundColor = 'blue';
-            } else {
+            if (spaceValue === -1){
                 cell.style.backgroundColor = 'black';
+            }
+            else if (spaceValue === 1) {
+                cell.style.backgroundColor = 'orange';
+            } else if (spaceValue === 2)  {
+                cell.style.backgroundColor = 'purple';
+            }
+            else if (spaceValue == 3) {
+                cell.style.backgroundColor = 'yellow';
+            }
+            else if (spaceValue == 4){
+                cell.style.backgroundColor = 'green';
+            } else {
+                cell.style.backgroundColor = 'grey';
             }
         }
     }
+
 }
