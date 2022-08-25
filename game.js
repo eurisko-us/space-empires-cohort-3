@@ -1,29 +1,35 @@
 class Game {
-    constructor(clientSockets) {
+    constructor(clientSockets, players) {
         this.clientSockets = clientSockets;
 
-        this.state = null;
+        this.players = players;
+
+        this.numRows = 7;
+        this.numCols = 7;
+        this.state = this.generateInitialGameState();
     }
 
     start() {
         setInterval(() => {
-            this.state = this.generateRandomGameState();
+            
+            this.makeMove();
 
             for(let socketId in this.clientSockets) {
                 let socket = this.clientSockets[socketId];
 
                 socket.emit('gameState', { 
                     gameState: this.state
-                });        
+                });
             }
-        }, 200);  
+        }, 500);
     }
 
-    generateRandomGameState() {
+    generateInitialGameState() {
         let board = {
-            numRows: 20,
-            numCols: 20,
-            spaces: []
+            numRows: 7,
+            numCols: 7,
+            spaces: [],
+            playerToMove: 1
         };
 
         board.spaces = new Array(board.numRows);
@@ -32,9 +38,11 @@ class Game {
         }
 
         for(let i = 0; i < board.numRows; i++) {
-            for(let j = 0; j < board.numCols; j++) {        
-                let r = this.getRandomInteger(1, 20);
-                board.spaces[i][j] = r;
+            for(let j = 0; j < board.numCols; j++) {   
+                board.spaces[i][j] = [];
+                if ((i === 0 || i === 6) && j === 3) {
+                    board.spaces[i][j].push(); // colony class goes in here
+                }
             }
         }    
 
@@ -45,12 +53,13 @@ class Game {
         return gameState;
     }
 
-    getRandomInteger(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
+    makeMove() {
 
-        return Math.floor(Math.random() * (max - min + 1) + min);
+        let move = this.players[playerToMove - 1].choose_move();
+
+        this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
     }
+
 }
 
 module.exports = Game;
