@@ -53,11 +53,29 @@ class Game {
         return gameState;
     }
 
-    makeMove() {
+    makeMove(object) {
+        ships = object.shipId
+        moves = object.movement
+        for (i = 0; i < len(ships); i++) {
+            ship = ships[i]
+            pos = ship.position
+            move = moves[i]
+            if (move === "left") {
+                pos[0] -= 1
+            } else if (move === "right") {
+                pos[0] += 1
+            } else if (move === "up") {
+                pos[1] -= 1
+            } else if (move === "down") {
+                pos[1] += 1
+            }
+            ship.position = pos
+        }
 
         let move = this.players[playerToMove - 1].choose_move();
 
         this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
+        
     }
 
 }
