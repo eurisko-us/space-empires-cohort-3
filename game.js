@@ -61,13 +61,29 @@ class Game {
             pos = ship.position;
             move = moves[i];
             if (move === "left") {
-                pos[0] -= 1;
+                if (pos[0] != 0) {
+                    pos[0] -= 1;
+                } else {
+                    console.log("You can't move left!");
+                }
             } else if (move === "right") {
-                pos[0] += 1;
+                if (pos[0] != 7) {
+                    pos[0] += 1;
+                } else {
+                    console.log("You can't move right!");
+                }
             } else if (move === "up") {
-                pos[1] -= 1;
+                if (pos[1] != 0) {
+                    pos[1] -= 1;
+                } else {
+                    console.log("You can't move up!");
+                }
             } else if (move === "down") {
-                pos[1] += 1;
+                if (pos[0] != 7) {
+                    pos[0] += 1;
+                } else {
+                    console.log("You can't move down!");
+                }
             }
             ship.position = pos;
         }
