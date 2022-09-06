@@ -16,13 +16,13 @@ class Game {
                     gameState: this.state
                 });        
             }
-        }, 200);  
+        }, 1000);  
     }
 
     generateRandomGameState() {
         let board = {
-            numRows: 20,
-            numCols: 20,
+            numRows: 10,
+            numCols: 15,
             spaces: []
         };
 
@@ -34,6 +34,8 @@ class Game {
         for(let i = 0; i < board.numRows; i++) {
             for(let j = 0; j < board.numCols; j++) {        
                 let r = this.getRandomInteger(1, 20);
+                if ((i == 0|| i == 1 || i == 8 || i == 9) && (j == 0 || j == 1 || j == 13 || j == 14)){
+                    r = 0 }
                 board.spaces[i][j] = r;
             }
         }    
