@@ -9,3 +9,5 @@ class Ship{
           this.position = [6,3]}
       }
 }
+
+module.exports = Ship

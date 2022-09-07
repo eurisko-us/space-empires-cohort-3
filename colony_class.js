@@ -14,3 +14,5 @@ class Colony{
       }
       }
 }      
+
+module.export Colony
