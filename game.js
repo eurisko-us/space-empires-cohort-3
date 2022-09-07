@@ -1,8 +1,10 @@
+const Colony = require('./colony_class');
+
 class Game {
-    constructor(clientSockets, players) {
+    constructor(clientSockets, Player1, Player2) {
         this.clientSockets = clientSockets;
 
-        this.players = players;
+        this.players = [Player1(1), Player2(2)];
 
         this.numRows = 7;
         this.numCols = 7;
@@ -40,8 +42,11 @@ class Game {
         for(let i = 0; i < board.numRows; i++) {
             for(let j = 0; j < board.numCols; j++) {   
                 board.spaces[i][j] = [];
-                if ((i === 0 || i === 6) && j === 3) {
-                    board.spaces[i][j].push(); // colony class goes in here
+                if (i === 0 && j === 3) {
+                    board.spaces[i][j].push(Colony(1));
+                }
+                else if(i === 6 && j === 3) {
+                    board.spaces[i][j].push(Colony(2));
                 }
             }
         }    
