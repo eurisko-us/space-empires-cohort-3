@@ -57,7 +57,7 @@ class Game {
                     board.spaces[i][j].push(Colony(2));
                 }
             }
-        }    
+        }     // colony class goes in here
 
         let gameState = {
             board
