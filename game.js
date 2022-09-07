@@ -53,13 +53,12 @@ class Game {
         return gameState;
     }
 
-    makeMove(object) {
-        ships = object.shipId;
-        moves = object.movement;
+    makeMove(moves) {
+        ships = Object.keys(moves);
         for (i = 0; i < len(ships); i++) {
             ship = ships[i];
-            pos = ship.position;
-            move = moves[i];
+            move = moves[ship];
+            pos = ship.position();
             if (move === "left") {
                 if (pos[0] != 0) {
                     pos[0] -= 1;
@@ -97,4 +96,3 @@ class Game {
 }
 
 module.exports = Game;
-
