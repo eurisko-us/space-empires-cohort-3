@@ -1,9 +1,9 @@
 class Colony{
-    constructor(player_num,home=false) {
+    constructor(playerNum,home=false) {
         
-      this.player_num = player_num
+      this.playerNum = playerNum
       if (home == true) {
-        if (this.player_num == 1) {
+        if (this.playerNum == 1) {
           this.position = [0,3]} 
 
         else {

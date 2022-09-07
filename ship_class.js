@@ -1,8 +1,8 @@
 class Ship{
-    constructor(player_num) {
-        this.player_num = player_num
+    constructor(playerNum) {
+        this.playerNum = playeNum
 
-        if (this.player_num == 1) {
+        if (this.playerNum == 1) {
           this.position = [0,3]} 
 
         else {
