@@ -9,6 +9,14 @@ class Game {
         this.numRows = 7;
         this.numCols = 7;
         this.state = this.generateInitialGameState();
+
+        for (let socketId in this.clientSockets) {
+            let socket = this.clientSockets[socketId];
+
+            socket.emit('gameState', {
+                gameState: this.state
+            });
+        }
     }
 
     start() {
