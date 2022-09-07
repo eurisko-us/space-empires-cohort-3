@@ -71,7 +71,7 @@ class Game {
                     console.log("You can't move left!");
                 }
             } else if (move === "right") {
-                if (pos[0] != 7) {
+                if (pos[0] != 6) {
                     pos[0] += 1;
                 } else {
                     console.log("You can't move right!");
@@ -83,7 +83,7 @@ class Game {
                     console.log("You can't move up!");
                 }
             } else if (move === "down") {
-                if (pos[0] != 7) {
+                if (pos[0] != 6) {
                     pos[0] += 1;
                 } else {
                     console.log("You can't move down!");
