@@ -46,3 +46,5 @@ class Dumbboat{
 
     }
 }
+
+module.exports = Dumbboat;
