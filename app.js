@@ -31,5 +31,5 @@ http.listen(3000, () => {
     console.log('Listening on *:3000');
 });
 
-const game = new Game(clientSockets);
+const game = new Game(clientSockets, Dumbboat, Dumbboat);
 game.start();
