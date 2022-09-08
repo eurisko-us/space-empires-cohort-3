@@ -6,7 +6,7 @@ socket.on('gameState', (data) => {
 
 function updateUI(gameState) {
     let board = gameState.board;
-    updateBoard(board);            
+    updateBoard(board);
 }
 
 function updateBoard(board) {
