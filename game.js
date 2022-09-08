@@ -39,7 +39,6 @@ class Game {
             numRows: 7,
             numCols: 7,
             spaces: [],
-            playerToMove: 1
         };
 
         board.spaces = new Array(board.numRows);
@@ -60,7 +59,8 @@ class Game {
         }
 
         let gameState = {
-            board
+            board,
+            playerToMove: 1
         };
 
         return gameState;
