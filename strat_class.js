@@ -1,6 +1,3 @@
-const { range } = require("express/lib/request")
-
-
 class Strat{
     constructor(pid){
         this.pid = pid
