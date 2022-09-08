@@ -3,6 +3,8 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const Game = require('./game');
+const Dumbboat = require('./strat_class');
+
 
 app.use(express.static('public'))
 
