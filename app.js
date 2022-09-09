@@ -4,7 +4,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var rls = require('readline-sync');
 const Game = require('./game');
-const Dumbboat = require('./strat_class');
+const Dumbboat = require('./stratClass');
 
 
 app.use(express.static('public'))
@@ -32,5 +32,5 @@ http.listen(3000, () => {
     console.log('Listening on *:3000');
 });
 
-const game = new Game(clientSockets);
+const game = new Game(clientSockets, Dumbboat, Dumbboat);
 game.start();

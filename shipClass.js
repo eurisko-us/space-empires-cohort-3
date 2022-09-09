@@ -3,10 +3,10 @@ class Ship{
         this.playerNum = playerNum;
 
         if (this.playerNum == 1) {
-          this.position = [0,3]}
+          this.position = [0,3];}
 
         else {
-          this.position = [6,3]}
+          this.position = [6,3];}
       }
 }
 

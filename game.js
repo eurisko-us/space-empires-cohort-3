@@ -1,4 +1,6 @@
-const Colony = require('./colony_class');
+const Colony = require('./colonyClass');
+const Ship = require('./shipClass');
+
 
 class Game {
     constructor(clientSockets, Player1, Player2) {
@@ -39,7 +41,6 @@ class Game {
             numRows: 7,
             numCols: 7,
             spaces: [],
-            playerToMove: 1
         };
 
         board.spaces = new Array(board.numRows);
@@ -52,26 +53,41 @@ class Game {
                 board.spaces[i][j] = [];
                 if (i === 0 && j === 3) {
                     board.spaces[i][j].push(new Colony(1));
+                    board.spaces[i][j].push(new Ship(1));
                 }
                 else if(i === 6 && j === 3) {
                     board.spaces[i][j].push(new Colony(2));
+                    board.spaces[i][j].push(new Ship(2));
                 }
             }
         }
 
         let gameState = {
-            board
+            board,
+            playerToMove: 1
         };
 
         return gameState;
     }
 
-    makeMove(moves) {
-        ships = Object.keys(moves);
-        for (i = 0; i < len(ships); i++) {
-            ship = ships[i];
-            move = moves[ship];
-            pos = ship.position();
+    makeMove() {
+
+        let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
+
+        this.moveShips(move);
+
+        this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
+
+        console.log(this.state);
+        
+    }
+
+    moveShips(moves) {
+        let ships = Object.keys(moves);
+        for (let i = 0; i < ships.length; i++) {
+            let ship = ships[i];
+            let move = moves[ship];
+            let pos = ship.position;
             if (move === "left") {
                 if (pos[0] != 0) {
                     pos[0] -= 1;
@@ -99,11 +115,6 @@ class Game {
             }
             ship.position = pos;
         }
-
-        let move = this.players[playerToMove - 1].choose_move();
-
-        this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
-        
     }
 
 }
