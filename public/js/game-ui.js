@@ -25,7 +25,10 @@ function updateBoard(board) {
 
         for(let j = 0; j < board.numCols; j++) {
             let spaceValue = board.spaces[i][j];
-            
+
+            if (spaceValue.length > 0) {
+                alert(JSON.stringify(spaceValue));
+            }
 
             let cell = row.insertCell();
             cell.className = 'boardSpace';
@@ -41,7 +44,7 @@ function updateBoard(board) {
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black'
             } else {
-                cell.style.backgroundColor = 'gray';
+                cell.style.backgroundColor = 'yellow';
             }
         }
     }

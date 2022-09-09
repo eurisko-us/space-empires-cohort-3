@@ -51,9 +51,11 @@ class Game {
                 board.spaces[i][j] = [];
                 if (i === 0 && j === 3) {
                     board.spaces[i][j].push(new Colony(1));
+                    board.spaces[i][j].push(new Ship(1));
                 }
                 else if(i === 6 && j === 3) {
                     board.spaces[i][j].push(new Colony(2));
+                    board.spaces[i][j].push(new Ship(2));
                 }
             }
         }
