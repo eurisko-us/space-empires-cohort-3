@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+var rls = require('readline-sync');
 const Game = require('./game');
 const Dumbboat = require('./strat_class');
 

@@ -1,3 +1,4 @@
+var rls = require('readline-sync');
 class Strat{
     constructor(pid){
         this.pid = pid
@@ -38,10 +39,37 @@ class Dumbboat{
                     }
                 }
             }
+
         }
         return moveobj
 
     }
 }
 
+class manualBoat{
+    constructor(pid){
+        this.pid = pid
+        this.i = 0
+    }
+    chooseMove(board){
+        this.moves = {}
+        this.qed = null 
+        this.ans = null
+        while(this.qed != ''){
+            this.qed = (rls.question('input id here '))
+            if(this.qed != ''){
+                this.qed = parseInt(this.qed)
+                this.ans = (rls.question('input move here '))
+            }
+            else{
+                return this.moves
+            }
+            this.moves[this.qed] = this.ans
+        }
+        return this.moves
+    }
+}
+let a = new manualBoat(1)
+console.log(a.chooseMove([]))
 module.exports = Dumbboat;
+module.exports = manualBoat;
