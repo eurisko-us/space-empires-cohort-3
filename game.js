@@ -1,4 +1,6 @@
 const Colony = require('./colonyClass');
+const Ship = require('./shipClass');
+
 
 class Game {
     constructor(clientSockets, Player1, Player2) {
