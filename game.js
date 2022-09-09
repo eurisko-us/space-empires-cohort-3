@@ -1,4 +1,4 @@
-const Colony = require('./colony_class');
+const Colony = require('./colonyClass');
 
 class Game {
     constructor(clientSockets, Player1, Player2) {
@@ -70,11 +70,11 @@ class Game {
 
         let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
 
-        this.moveShips(move)
+        this.moveShips(move);
 
         this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
 
-        console.log(this.state)
+        console.log(this.state);
         
     }
 
