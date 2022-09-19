@@ -88,6 +88,10 @@ class Game {
             let ship = ships[i];
             let move = moves[ship];
             let pos = ship.position;
+
+            shipIndexInBoardSpace = this.state.board[pos[0]][pos[1]].indexOf(ship);
+            this.state.board[pos[0]][pos[1]].splice(shipIndexInBoardSpace, 1);
+
             if (move === "left") {
                 if (pos[0] != 0) {
                     pos[0] -= 1;
@@ -114,6 +118,7 @@ class Game {
                 }
             }
             ship.position = pos;
+            this.state.board[pos[0]][pos[1]] = ship;
         }
     }
 
