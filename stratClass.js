@@ -70,6 +70,6 @@ class manualBoat{
     }
 }
 let a = new manualBoat(1)
-console.log(a.chooseMove([]))
+//console.log(a.chooseMove([]))
 module.exports = Dumbboat;
 module.exports = manualBoat;

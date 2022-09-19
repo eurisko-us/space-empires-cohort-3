@@ -4,6 +4,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var rls = require('readline-sync');
 const Game = require('./game');
+const manualBoat = require('./stratClass');
 const Dumbboat = require('./stratClass');
 
 
@@ -33,4 +34,5 @@ http.listen(3000, () => {
 });
 
 const game = new Game(clientSockets, Dumbboat, Dumbboat);
+
 game.start();
