@@ -24,8 +24,14 @@ function updateBoard(board) {
         let row = boardTable.insertRow();
 
         for(let j = 0; j < board.numCols; j++) {
-            let spaceValue = board.spaces[i][j];
-
+            let space = board.spaces[i][j]
+            if (space.length === 0){
+                spaceValue = board.spaces[i][j]
+            } else{
+                for (let k = 0; k < space.length; k++){
+                    typeof(space[k])
+                }
+            }
             if (spaceValue.length > 0) {
                 alert(JSON.stringify(spaceValue));
             }
