@@ -83,14 +83,11 @@ class Game {
     }
 
     moveShips(moves) {
-        let ships = Object.keys(moves);
+        let shipIds = Object.keys(moves);
         for (let i = 0; i < ships.length; i++) {
-            let ship = ships[i];
-            let move = moves[ship];
+            let ship = this.state.allEntities[shipIds[i]];
+            let move = moves[shipIds[i]];
             let pos = ship.position;
-
-            shipIndexInBoardSpace = this.state.board[pos[0]][pos[1]].indexOf(ship);
-            this.state.board[pos[0]][pos[1]].splice(shipIndexInBoardSpace, 1);
 
             if (move === "left") {
                 if (pos[0] != 0) {
@@ -118,10 +115,8 @@ class Game {
                 }
             }
             ship.position = pos;
-            this.state.board[pos[0]][pos[1]] = ship;
         }
     }
-
 }
 
 module.exports = Game;
