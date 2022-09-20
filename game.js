@@ -10,6 +10,7 @@ class Game {
 
         this.numRows = 7;
         this.numCols = 7;
+
         this.state = this.generateInitialGameState();
 
         for (let socketId in this.clientSockets) {
@@ -25,6 +26,8 @@ class Game {
         setInterval(() => {
             
             this.makeMove();
+
+            this.refreshBoard();
 
             for(let socketId in this.clientSockets) {
                 let socket = this.clientSockets[socketId];
@@ -52,19 +55,27 @@ class Game {
             for(let j = 0; j < board.numCols; j++) {   
                 board.spaces[i][j] = [];
                 if (i === 0 && j === 3) {
-                    board.spaces[i][j].push(new Colony(1));
-                    board.spaces[i][j].push(new Ship(1));
+                    p1Colony = new Colony(1, entityId = 1);
+                    board.spaces[i][j].push(p1Colony);
+                    p1Ship = new Ship(1, entityId = 3);
+                    board.spaces[i][j].push(p1Ship);
                 }
                 else if(i === 6 && j === 3) {
-                    board.spaces[i][j].push(new Colony(2));
-                    board.spaces[i][j].push(new Ship(2));
+                    p2Colony = new Colony(2, entityId = 2);
+                    board.spaces[i][j].push(p2Colony);
+                    p2Ship = new Ship(2, entityId = 2)
+                    board.spaces[i][j].push(p2Ship);
                 }
             }
         }
 
         let gameState = {
             board,
-            playerToMove: 1
+            playerToMove: 1,
+            allEntities: {1: p1Colony,
+                          2: p2Colony,
+                          3: p1Ship,
+                          4: p2Ship}
         };
 
         return gameState;
