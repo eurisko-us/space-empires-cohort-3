@@ -55,15 +55,15 @@ class Game {
             for(let j = 0; j < board.numCols; j++) {   
                 board.spaces[i][j] = [];
                 if (i === 0 && j === 3) {
-                    p1Colony = new Colony(1, entityId = 1);
+                    var p1Colony = new Colony(1, true, 1);
                     board.spaces[i][j].push(p1Colony);
-                    p1Ship = new Ship(1, entityId = 3);
+                    var p1Ship = new Ship(1, 3);
                     board.spaces[i][j].push(p1Ship);
                 }
                 else if(i === 6 && j === 3) {
-                    p2Colony = new Colony(2, entityId = 2);
+                    var p2Colony = new Colony(2, true, 2);
                     board.spaces[i][j].push(p2Colony);
-                    p2Ship = new Ship(2, entityId = 2)
+                    var p2Ship = new Ship(2, 2)
                     board.spaces[i][j].push(p2Ship);
                 }
             }
