@@ -1,5 +1,5 @@
 var rls = require('readline-sync');
-class Strat{
+/*class Strat{
     constructor(pid){
         this.pid = pid;
     }
@@ -21,8 +21,9 @@ class Strat{
     }
 
 }
+*/
 
-class Dumbboat{
+class dumbBoat{
     constructor(pid){
         this.pid = pid;
     }
@@ -49,27 +50,33 @@ class Dumbboat{
 class manualBoat{
     constructor(pid){
         this.pid = pid
-        this.i = 0
     }
     chooseMove(board){
+        //board is useless here, it's just so you don't get a "too many inputs" error
+        //stores the moves
         this.moves = {}
-        this.qed = null 
-        this.ans = null
-        while(this.qed != ''){
-            this.qed = (rls.question('input id here '))
-            if(this.qed != ''){
-                this.qed = parseInt(this.qed)
-                this.ans = (rls.question('input move here '))
+        //stores last ship_id
+        this.ship_id = null 
+        //stores last ship_move
+        this.ship_move = null
+        //asks for input
+        while(true){
+            this.ship_id = (rls.question('input id here '))
+            //breaks if no input
+            if(this.ship_id != ''){
+                //converts to int and asks for move
+                this.ship_id = parseInt(this.ship_id)
+                this.ship_move = (rls.question('input move here '))
             }
             else{
                 return this.moves
             }
-            this.moves[this.qed] = this.ans
+            //adds move and id to bank
+            this.moves[this.ship_id] = this.ship_move
         }
-        return this.moves
     }
 }
-let a = new manualBoat(1)
+//let a = new manualBoat(1)
 //console.log(a.chooseMove([]))
-module.exports = Dumbboat;
-module.exports = manualBoat;
+module.exports.dumbBoat = dumbBoat;
+module.exports.manualBoat = manualBoat;

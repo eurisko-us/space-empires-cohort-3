@@ -79,12 +79,20 @@ class Game {
         this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
 
         console.log(this.state);
+        console.table(this.state["board"]["spaces"])
+        //DEBUGGING
+        console.log(this.state["board"]["spaces"].length)
+        for(let j = 0;  j < this.state["board"]["spaces"].length;j++){
+            console.log(this.state["board"]["spaces"][j])
+        }
+
         
     }
 
     moveShips(moves) {
         let shipIds = Object.keys(moves);
-        for (let i = 0; i < ships.length; i++) {
+        //for(let i = 0; i < ships.length; i++){
+        for (let i = 0; i < moves.length; i++) {
             let ship = this.state.allEntities[shipIds[i]];
             let move = moves[shipIds[i]];
             let pos = ship.position;
