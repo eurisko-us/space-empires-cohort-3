@@ -1,7 +1,7 @@
 class Ship{
-    constructor(playerNum) {
+    constructor(playerNum, entityId) {
         this.playerNum = playerNum;
-
+        this.id = entityId;
         if (this.playerNum == 1) {
           this.position = [0,3];}
 
