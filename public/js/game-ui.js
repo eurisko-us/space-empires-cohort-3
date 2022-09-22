@@ -6,10 +6,11 @@ socket.on('gameState', (data) => {
 
 function updateUI(gameState) {
     let board = gameState.board;
-    updateBoard(board);
+    let state = gameState;
+    updateBoard(board, state);
 }
 
-function updateBoard(board) {
+function updateBoard(board, state) {
     // Delete board table if it already exists because we're just going to recreate it
     let boardTable = document.getElementById('board');
     if (boardTable) {
@@ -24,17 +25,25 @@ function updateBoard(board) {
         let row = boardTable.insertRow();
 
         for(let j = 0; j < board.numCols; j++) {
-            let space = board.spaces[i][j]
+            let spaceValue = null;
+            let space = board.spaces[i][j];
             if (space.length === 0){
-                spaceValue = board.spaces[i][j]
+                spaceValue = 0;
             } else{
-                for (let k = 0; k < space.length; k++){
-                    typeof(space[k])
+                for (let i = 1; i < space.length; i++){
+                    let entity = state.allEntities[space[i]];
+                    let type = entity.entityType;
+                    if (type === "ship"){
+                        spaceValue = 2;
+                    } else if (type === "colony"){
+                        spaceValue = 3;
+                    }
+                    }
                 }
             }
-            if (spaceValue.length > 0) {
-                alert(JSON.stringify(spaceValue));
-            }
+            // if (spaceValue.length > 0) {
+            //     alert(JSON.stringify(spaceValue));
+            // }
 
             let cell = row.insertCell();
             cell.className = 'boardSpace';
@@ -53,5 +62,4 @@ function updateBoard(board) {
                 cell.style.backgroundColor = 'yellow';
             }
         }
-    }
 }
