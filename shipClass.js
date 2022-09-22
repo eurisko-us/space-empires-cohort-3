@@ -2,6 +2,7 @@ class Ship{
     constructor(playerNum, entityId) {
         this.playerNum = playerNum;
         this.id = entityId;
+        this.entityType = "ship";
         if (this.playerNum == 1) {
           this.position = [0,3];}
 
