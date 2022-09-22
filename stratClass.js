@@ -63,9 +63,17 @@ class manualBoat{
         while(true){
             this.ship_id = (rls.question('input id here '))
             //breaks if no input
+
             if(this.ship_id != ''){
                 //converts to int and asks for move
                 this.ship_id = parseInt(this.ship_id)
+            
+                    //makes sure same player doesn't move twice
+                if (this.ship_id == Object.keys(this.moves)[Object.keys(this.moves).length-1]){
+                    console.log("Error: same player moved consecutively ");
+                    break;
+
+                }
                 this.ship_move = (rls.question('input move here '))
             }
             else{
