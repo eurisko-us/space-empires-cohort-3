@@ -69,6 +69,8 @@ class manualBoat{
                 this.ship_move = (rls.question('input move here '))
             }
             else{
+                console.log('returning moves:')
+                console.log(this.moves);
                 return this.moves
             }
             //adds move and id to bank

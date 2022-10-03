@@ -33,6 +33,6 @@ http.listen(3000, () => {
     console.log('Listening on *:3000');
 });
 
-const game = new Game(clientSockets, manualBoat, manualBoat);
+const game = new Game(clientSockets, dumbBoat, dumbBoat);
 
 game.start();
