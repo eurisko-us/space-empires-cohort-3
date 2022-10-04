@@ -33,10 +33,12 @@ class dumbBoat{
             for(let j = 0; j < board[0].length; j++){
                 if(board[i][j].length != 0){
                     if(this.pid == 1){
-                        moveobj[board[i][j]] = "down";
+                        moveobj[3] = "down";
+                        return moveobj;
                     }
-                    if(this.pid == 2){
-                        moveobj[board[i][j]] = "up";
+                    else if(this.pid == 2){
+                        moveobj[4] = "up";
+                        return moveobj;
                     }
                 }
             }
