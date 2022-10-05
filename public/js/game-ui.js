@@ -35,10 +35,18 @@ function updateBoard(state) {
                     let entity = state.allEntities[space[i]];
                     let type = entity.entityType;
                     if (type === "ship"){
-                        spaceValue = 2;
+                        if (entity.playerNum == 1) {
+                            spaceValue = 1;
+                        } else if (entity.playerNum == 2) {
+                            spaceValue = 2;
+                        }
 
                     } else if (type === "colony"){
-                        spaceValue = 3;
+                        if (entity.playerNum == 1) {
+                            spaceValue = 3;
+                        } else if (entity.playerNum == 2) {
+                            spaceValue = 4;
+                        }
                     }
                 }
             }
@@ -48,13 +56,13 @@ function updateBoard(state) {
             
                     
             if (spaceValue === 1) {
-                cell.style.backgroundColor = 'orange';
+                cell.style.backgroundColor = 'blue';
             } else if (spaceValue === 2)  {
-                cell.style.backgroundColor = 'purple';
+                cell.style.backgroundColor = 'red';
             } else if (spaceValue == 3) {
-                cell.style.backgroundColor = 'green';
+                cell.style.backgroundColor = 'lightskyblue';
             } else if (spaceValue == 4) {
-                cell.style.backgroundColor = 'yellow';
+                cell.style.backgroundColor = 'crimson';
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black'
             } else {
