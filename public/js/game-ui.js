@@ -1,15 +1,17 @@
 const socket = io();
 
 socket.on('gameState', (data) => {
+    // alert('gameState received' + JSON.stringify(data.gameState))
     updateUI(data.gameState);
 });
 
 function updateUI(gameState) {
-    let board = gameState.board;
-    updateBoard(board);
+    let state = gameState;
+    updateBoard(state);
 }
 
-function updateBoard(board) {
+function updateBoard(state) {
+    let board = state.board;
     // Delete board table if it already exists because we're just going to recreate it
     let boardTable = document.getElementById('board');
     if (boardTable) {
@@ -19,39 +21,54 @@ function updateBoard(board) {
     boardTable = document.createElement('table');
     boardTable.id = 'board';
     document.body.appendChild(boardTable);
-
+    
+    
     for(let i = 0; i < board.numRows; i++) {
         let row = boardTable.insertRow();
+        for(var j = 0; j < board.numCols; j++) {
+            var spaceValue = null;
+            let space = board.spaces[i][j];
+            if (space.length === 0) {
+                spaceValue = 0;
+            } else {
+                for (let i = 0; i < space.length; i++){
+                    let entity = state.allEntities[space[i]];
+                    let type = entity.entityType;
+                    if (type === "ship"){
+                        if (entity.playerNum == 1) {
+                            spaceValue = 1;
+                        } else if (entity.playerNum == 2) {
+                            spaceValue = 2;
+                        }
 
-        for(let j = 0; j < board.numCols; j++) {
-            let space = board.spaces[i][j]
-            if (space.length === 0){
-                spaceValue = board.spaces[i][j]
-            } else{
-                for (let k = 0; k < space.length; k++){
-                    typeof(space[k])
+                    } else if (type === "colony"){
+                        if (entity.playerNum == 1) {
+                            spaceValue = 3;
+                        } else if (entity.playerNum == 2) {
+                            spaceValue = 4;
+                        }
+                    }
                 }
-            }
-            if (spaceValue.length > 0) {
-                alert(JSON.stringify(spaceValue));
             }
 
             let cell = row.insertCell();
             cell.className = 'boardSpace';
-
+            
+                    
             if (spaceValue === 1) {
-                cell.style.backgroundColor = 'orange';
+                cell.style.backgroundColor = 'blue';
             } else if (spaceValue === 2)  {
-                cell.style.backgroundColor = 'purple';
+                cell.style.backgroundColor = 'red';
             } else if (spaceValue == 3) {
-                cell.style.backgroundColor = 'green';
+                cell.style.backgroundColor = 'lightskyblue';
             } else if (spaceValue == 4) {
-                cell.style.backgroundColor = 'yellow';
+                cell.style.backgroundColor = 'crimson';
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black'
             } else {
                 cell.style.backgroundColor = 'yellow';
             }
         }
-    }
+        }
+
 }

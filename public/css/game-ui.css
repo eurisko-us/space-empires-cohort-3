@@ -1,12 +1,11 @@
 td.boardSpace {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
 }
 
 table {
     margin-top: auto;
     margin-bottom: auto;
-    height: 700px;
 }
 
 body {

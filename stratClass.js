@@ -28,22 +28,12 @@ class dumbBoat{
         this.pid = pid;
     }
     chooseMove(board){
-        let moveobj = {}
-        for(let i = 0;i<board.length; i++){
-            for(let j = 0; j < board[0].length; j++){
-                if(board[i][j].length != 0){
-                    if(this.pid == 1){
-                        moveobj[board[i][j]] = "down";
-                    }
-                    if(this.pid == 2){
-                        moveobj[board[i][j]] = "up";
-                    }
-                }
-            }
-
+        if (this.pid == 1) {
+            return {3: 'down'};
         }
-        return moveobj;
-
+        else if (this.pid == 2) {
+            return {4: 'up'};
+        }
     }
 }
 
@@ -77,6 +67,8 @@ class manualBoat{
                 this.ship_move = (rls.question('input move here '))
             }
             else{
+                console.log('returning moves:')
+                console.log(this.moves);
                 return this.moves
             }
             //adds move and id to bank
