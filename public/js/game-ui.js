@@ -25,29 +25,28 @@ function updateBoard(state) {
     
     for(let i = 0; i < board.numRows; i++) {
         let row = boardTable.insertRow();
-
-        for(let j = 0; j < board.numCols; j++) {
+        for(var j = 0; j < board.numCols; j++) {
             var spaceValue = null;
             let space = board.spaces[i][j];
-            if (space.length === 0){
+            if (space.length === 0) {
                 spaceValue = 0;
-            } else{
-                // for (let i = 1; i < space.length; i++){
-                //     let entity = state.allEntities[space[i]];
-                //     let type = entity.entityType;
-                //     if (type === "ship"){
-                //         spaceValue = 2;
-                //     } else if (type === "colony"){
-                //         spaceValue = 3;
-                //     }
-                //     }
-                    spaceValue = 3;
+            } else {
+                for (let i = 0; i < space.length; i++){
+                    let entity = state.allEntities[space[i]];
+                    let type = entity.entityType;
+                    if (type === "ship"){
+                        spaceValue = 2;
+
+                    } else if (type === "colony"){
+                        spaceValue = 3;
+                    }
                 }
             }
 
             let cell = row.insertCell();
             cell.className = 'boardSpace';
-
+            
+                    
             if (spaceValue === 1) {
                 cell.style.backgroundColor = 'orange';
             } else if (spaceValue === 2)  {
@@ -61,6 +60,7 @@ function updateBoard(state) {
             } else {
                 cell.style.backgroundColor = 'yellow';
             }
+        }
         }
 
 }
