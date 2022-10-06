@@ -23,10 +23,18 @@ class Game {
     }
 
     start() {
-        setInterval(() => {
+        let gameInterval = setInterval(() => {
+
+            let winner = this.checkWinState();
+
+            if (winner != 0) {
+                clearInterval(gameInterval);
+                return winner;
+            }
 
             this.makeMove();
-
+            
+            
             this.refreshBoard();
 
             for (let socketId in this.clientSockets) {
@@ -36,9 +44,25 @@ class Game {
                     gameState: this.state
                 });
             }
-        }, 500);
+        }, 750);
     }
 
+    checkWinState() {
+        console.log('Checking win state');
+        for (var i = 0; i < Object.keys(this.state.allEntities).length; i++) {
+            let ship = this.state.allEntities[i + 1];
+            if (ship.playerNum == 1 && (ship.position[0] == 6) && (ship.position[1] == 3)) {
+                console.log("Player 1 won!");
+                return 1;
+            }
+
+            else if (ship.playerNum == 2 && (ship.position[0] == 0) && (ship.position[1] == 3)) {
+                console.log('Player 2 won!');
+                return 2;
+            }
+        }
+        return 0;
+    }
     generateInitialGameState() {
         let board = {
             numRows: 7,
@@ -95,32 +119,31 @@ class Game {
 
         this.moveShips(move);
         //Making sure that colonies dont move`
-        let board = this.state["board"]["spaces"]
-        if (board[0][3][0] instanceof Colony != True) {
-            console.log("Error : Colony moved")
-        }
-        //making sure that ships don't duplicate
-        let numentity = 0
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[0].length; j++) {
-                for (let k = 0; k < board[0][0]; k++) {
-                    if (board[i][j][k] != null) {
-                        numentity += 1
-                    }
-                }
-            }
-        }
-        if (numentity != this.allEntities.length) {
-            console.log("Error: Duplicating ships occurred")
-        }
+        // let board = this.state["board"]["spaces"]
+        // if (board[0][3][0] instanceof Colony != True) {
+        //     console.log("Error : Colony moved")
+        // }
+        // //making sure that ships don't duplicate
+        // let numentity = 0
+        // for (let i = 0; i < board.length; i++) {
+        //     for (let j = 0; j < board[0].length; j++) {
+        //         for (let k = 0; k < board[0][0]; k++) {
+        //             if (board[i][j][k] != null) {
+        //                 numentity += 1
+        //             }
+        //         }
+        //     }
+        // }
+        // if (numentity != this.allEntities.length) {
+        //     console.log("Error: Duplicating ships occurred")
+        // }
         //making sure that ships don't teleport
 
 
         this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
 
         //REBUGING
-        console.log(this.state["board"])
-        console.table(this.state["board"]["spaces"])
+        // console.log(this.state["board"])
 
 
 
@@ -132,6 +155,8 @@ class Game {
         for (let i = 0; i < shipIds.length; i++) {
             let ship = this.state.allEntities[shipIds[i]];
             let move = moves[shipIds[i]];
+
+            if (!ship.moveable) return;
 
             if (move === "left") {
                 if (ship.position[1] != 0) {
@@ -172,7 +197,6 @@ class Game {
             let pos = this.state.allEntities[i + 1].position;
             this.state.board.spaces[pos[0]][pos[1]].push(i + 1);
         }
-        console.log('oi m8');
         console.table(this.state.board.spaces)
     }
 }
