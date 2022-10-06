@@ -1,5 +1,6 @@
 class Ship{
     constructor(playerNum, entityId) {
+        this.moveable = true;
         this.playerNum = playerNum;
         this.id = entityId;
         this.entityType = "ship";
