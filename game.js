@@ -29,6 +29,9 @@ class Game {
 
             if (winner != 0) {
                 clearInterval(gameInterval);
+                this.broadcastMessage('winner', {
+                    winner: winner
+                });
                 return winner;
             }
 
@@ -37,14 +40,26 @@ class Game {
             
             this.refreshBoard();
 
-            for (let socketId in this.clientSockets) {
-                let socket = this.clientSockets[socketId];
+            this.broadcastMessage('gameState', {
+                gameState: this.state
+            });
 
-                socket.emit('gameState', {
-                    gameState: this.state
-                });
-            }
-        }, 750);
+            // for (let socketId in this.clientSockets) {
+            //     let socket = this.clientSockets[socketId];
+
+            //     socket.emit('gameState', {
+            //         gameState: this.state
+            //     });
+            // }
+        }, 100);
+    }
+
+    broadcastMessage(msgName, msgJSON) {
+        for (let socketId in this.clientSockets) {
+            let socket = this.clientSockets[socketId];
+
+            socket.emit(msgName, msgJSON);
+        }
     }
 
     checkWinState() {
