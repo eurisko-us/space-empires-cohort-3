@@ -99,3 +99,4 @@ class manualBoat{
 //console.log(a.chooseMove([]))
 module.exports.dumbBoat = dumbBoat;
 module.exports.manualBoat = manualBoat;
+module.exports.randomBoat = randomBoat;
