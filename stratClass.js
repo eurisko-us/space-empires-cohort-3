@@ -37,6 +37,24 @@ class dumbBoat{
     }
 }
 
+class randomBoat {
+    constructor(pid) {
+        this.pid = pid;
+    }
+
+    chooseMove(board) {
+        const moves = ['up', 'down', 'right', 'left']
+        var randomMove = moves[Math.floor(Math.random() * moves.length)]
+        if (this.pid == 1) {
+            return {3 : randomMove}
+        }
+        else if (this.pid == 2) {
+            return {4 : randomMove}
+        }
+    }
+
+}
+
 class manualBoat{
     constructor(pid){
         this.pid = pid
@@ -76,6 +94,7 @@ class manualBoat{
         }
     }
 }
+
 //let a = new manualBoat(1)
 //console.log(a.chooseMove([]))
 module.exports.dumbBoat = dumbBoat;
