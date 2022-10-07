@@ -1,6 +1,7 @@
 td.boardSpace {
     width: 90px;
     height: 90px;
+    text-align: center;
 }
 
 table {
@@ -11,3 +12,4 @@ table {
 body {
     height: 100%;
 }
+
