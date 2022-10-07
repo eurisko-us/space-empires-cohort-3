@@ -5,6 +5,11 @@ socket.on('gameState', (data) => {
     updateUI(data.gameState);
 });
 
+
+socket.on('winner', (data) => {
+    alert('Player ' + data.winner + ' won!');
+})
+
 function updateUI(gameState) {
     let state = gameState;
     updateBoard(state);
