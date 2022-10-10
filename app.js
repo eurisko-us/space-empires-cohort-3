@@ -6,7 +6,7 @@ var rls = require('readline-sync');
 const Game = require('./game');
 const manualBoat = require('./stratClass').manualBoat;
 const dumbBoat = require('./stratClass').dumbBoat;
-
+const randomBoat = require('./stratClass').randomBoat;
 
 app.use(express.static('public'))
 
@@ -33,6 +33,10 @@ http.listen(3000, () => {
     console.log('Listening on *:3000');
 });
 
-const game = new Game(clientSockets, dumbBoat, dumbBoat);
+// while (Object.keys(clientSockets).length == 0) {
+//     return
+// }
+
+const game = new Game(clientSockets, randomBoat, randomBoat);
 
 game.start();

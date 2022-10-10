@@ -5,6 +5,11 @@ socket.on('gameState', (data) => {
     updateUI(data.gameState);
 });
 
+
+socket.on('winner', (data) => {
+    alert('Player ' + data.winner + ' won!');
+})
+
 function updateUI(gameState) {
     let state = gameState;
     updateBoard(state);
@@ -57,18 +62,22 @@ function updateBoard(state) {
                     
             if (spaceValue === 1) {
                 cell.style.backgroundColor = 'blue';
+                cell.innerText = "Player 1: Ship"
             } else if (spaceValue === 2)  {
                 cell.style.backgroundColor = 'red';
+                cell.innerText = "Player 2: Ship"
             } else if (spaceValue == 3) {
                 cell.style.backgroundColor = 'lightskyblue';
+                cell.innerText = "Player 1: Colony"
             } else if (spaceValue == 4) {
                 cell.style.backgroundColor = 'crimson';
+                cell.innerText = "Player 2: Colony"
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black'
             } else {
                 cell.style.backgroundColor = 'yellow';
             }
         }
-        }
+    }
 
 }
