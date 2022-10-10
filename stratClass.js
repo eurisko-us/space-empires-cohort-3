@@ -45,6 +45,7 @@ class randomBoat {
     chooseMove(board) {
         const moves = ['up', 'down', 'right', 'left']
         var randomMove = moves[Math.floor(Math.random() * moves.length)]
+        
         if (this.pid == 1) {
             return {3 : randomMove}
         }
@@ -99,3 +100,4 @@ class manualBoat{
 //console.log(a.chooseMove([]))
 module.exports.dumbBoat = dumbBoat;
 module.exports.manualBoat = manualBoat;
+module.exports.randomBoat = randomBoat;
