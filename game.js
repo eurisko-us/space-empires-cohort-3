@@ -107,7 +107,7 @@ class Game {
 
                     var p1Dreadnaught = new Ship(1, 4, "dreadnaught");
                     allEntities[p1Dreadnaught.id] = p1Dreadnaught;
-                    board.spaces[j][j].push(p1Dreadnaught.id);
+                    board.spaces[i][j].push(p1Dreadnaught.id);
                 } else if (i === 6 && j === 3) {
                     var p2Colony = new Colony(2, true, 2);
                     allEntities[p2Colony.id] = p2Colony;
@@ -119,19 +119,19 @@ class Game {
                     
                     var p2Dreadnaught = new Ship(2, 6, "dreadnaught");
                     allEntities[p2Dreadnaught.id] = p2Dreadnaught;
-                    board.spaces[j][j].push(p2Dreadnaught.id);
+                    board.spaces[i][j].push(p2Dreadnaught.id);
 
                 }
             }
 
+        }
         let gameState = {
             board,
             playerToMove: 1,
             allEntities: allEntities
             }
-        };
-
         return gameState;
+
     }
 
     makeMove() {
