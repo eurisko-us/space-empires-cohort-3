@@ -23,9 +23,7 @@ class Game {
     }
 
     start() {
-        let gameInterval = setInterval(() => {
-
-            let winner = this.checkWinState();
+        let gameInterval = setInterval(() => {            let winner = this.checkWinState();
 
             if (winner != 0) {
                 clearInterval(gameInterval);
@@ -74,14 +72,14 @@ class Game {
             else if (ship.playerNum == 2 && (ship.position[0] == 0) && (ship.position[1] == 3)) {
                 console.log('Player 2 won!');
                 return 2;
-            }
+          }
         }
         return 0;
     }
     generateInitialGameState() {
         let board = {
             numRows: 7,
-            numCols: 7,
+            numCols: 7, 
             spaces: [],
         };
 

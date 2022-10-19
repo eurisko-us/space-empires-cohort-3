@@ -1,3 +1,5 @@
+const { generatePrimeSync } = require('crypto');
+const { TIMEOUT } = require('dns');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -10,8 +12,8 @@ const randomBoat = require('./stratClass').randomBoat;
 
 app.use(express.static('public'))
 
-app.get('/', function(req, res) {
-	res.sendFile(__dirname + '/public/index.html');
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 let clientSockets = {};
@@ -26,7 +28,7 @@ io.on('connection', (socket) => {
         console.log('Client socket disconnected: ' + socketId);
 
         delete clientSockets[socketId];
-    });  
+    });
 });
 
 http.listen(3000, () => {
@@ -38,5 +40,8 @@ http.listen(3000, () => {
 // }
 
 const game = new Game(clientSockets, randomBoat, randomBoat);
+setTimeout(() => {
+    game.start()
+},2000)
 
-game.start();
+
