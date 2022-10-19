@@ -44,13 +44,14 @@ class randomBoat {
 
     chooseMove(board) {
         const moves = ['up', 'down', 'right', 'left']
-        var randomMove = moves[Math.floor(Math.random() * moves.length)]
+        var randomMoveOne = moves[Math.floor(Math.random() * moves.length)]
+        var randomMoveTwo = moves[Math.floor(Math.random() * moves.length)]
         
         if (this.pid == 1) {
-            return {3 : randomMove}
+            return {3 : randomMoveOne, 4: randomMoveTwo}
         }
         else if (this.pid == 2) {
-            return {4 : randomMove}
+            return {5 : randomMoveOne, 6: randomMoveTwo}
         }
     }
 
