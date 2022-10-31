@@ -29,7 +29,13 @@ io.on('connection', (socket) => {
 
         delete clientSockets[socketId];
     });
+
+    socket.on('reset', () => {
+        console.log('amogus');
+        // game.start();
+    });
 });
+
 
 http.listen(3000, () => {
     console.log('Listening on *:3000');

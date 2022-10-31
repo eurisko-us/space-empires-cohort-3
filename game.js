@@ -23,7 +23,8 @@ class Game {
     }
 
     start() {
-        let gameInterval = setInterval(() => {            let winner = this.checkWinState();
+        let gameInterval = setInterval(() => {
+            let winner = this.checkWinState();
 
             if (winner != 0) {
                 clearInterval(gameInterval);

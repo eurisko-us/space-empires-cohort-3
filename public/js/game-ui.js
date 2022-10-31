@@ -1,9 +1,16 @@
 const socket = io();
+let resetButton = document.getElementById('reset');
+resetButton.addEventListener('click', () => {
+    socket.emit('reset');
+});
+
 
 socket.on('gameState', (data) => {
     // alert('gameState received' + JSON.stringify(data.gameState))
     updateUI(data.gameState);
 });
+
+
 
 
 socket.on('winner', (data) => {
