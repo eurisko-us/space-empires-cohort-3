@@ -1,5 +1,11 @@
+let inputButton;
+let inputField;
+
+
+
 const socket = io();
 
+socket.on('manualupdate',(data) => {});
 socket.on('gameState', (data) => {
     // alert('gameState received' + JSON.stringify(data.gameState))
     updateUI(data.gameState);
@@ -9,6 +15,12 @@ socket.on('gameState', (data) => {
 socket.on('winner', (data) => {
     alert('Player ' + data.winner + ' won!');
 })
+
+function updateElements(){
+    inputField = document.getElementById("inputField");
+    inputButton = document.getElementById("inputButton");
+}
+
 
 function updateUI(gameState) {
     let state = gameState;

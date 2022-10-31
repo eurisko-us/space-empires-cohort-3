@@ -35,9 +35,6 @@ http.listen(3003, () => {
     console.log('Listening on *:3003');
 });
 
-// while (Object.keys(clientSockets).length == 0) {
-//     return
-// }
 
 const game = new Game(clientSockets, randomBoat, randomBoat);
 setTimeout(() => {
