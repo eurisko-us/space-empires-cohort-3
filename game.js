@@ -21,36 +21,29 @@ class Game {
             });
         }
     }
+    makeFrame(){
+        let winner = this.checkWinState();
 
-    start() {
-        let gameInterval = setInterval(() => {
-            let winner = this.checkWinState();
-
-            if (winner != 0) {
-                clearInterval(gameInterval);
-                this.broadcastMessage('winner', {
-                    winner: winner
-                });
-                return winner;
-            }
-
-            this.makeMove();
-            
-            
-            this.refreshBoard();
-
-            this.broadcastMessage('gameState', {
-                gameState: this.state
+        if (winner != 0) {
+            clearInterval(gameInterval);
+            this.broadcastMessage('winner', {
+                winner: winner
             });
+            return winner;
+        }
 
-            // for (let socketId in this.clientSockets) {
-            //     let socket = this.clientSockets[socketId];
+        this.makeMove();
+        
+        
+        this.refreshBoard();
 
-            //     socket.emit('gameState', {
-            //         gameState: this.state
-            //     });
-            // }
-        }, 100);
+        this.broadcastMessage('gameState', {
+            gameState: this.state
+        });
+
+    }
+    start() {
+        let gameInterval = setInterval(() => {this.makeFrame()}, 100);
     }
 
     broadcastMessage(msgName, msgJSON) {
