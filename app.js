@@ -29,11 +29,6 @@ io.on('connection', (socket) => {
 
         delete clientSockets[socketId];
     });
-
-    socket.on('reset', () => {
-        console.log('amogus');
-        // game.start();
-    });
 });
 
 
