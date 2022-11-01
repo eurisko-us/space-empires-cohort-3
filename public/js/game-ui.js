@@ -1,23 +1,15 @@
 let inputButton;
 let inputField;
-let startGameButton;
 
 
 
 const socket = io();
-let resetButton = document.getElementById('reset');
-resetButton.addEventListener('click', () => {
-    socket.emit('reset');
-});
-
 
 socket.on('manualupdate',(data) => {});
 socket.on('gameState', (data) => {
     // alert('gameState received' + JSON.stringify(data.gameState))
     updateUI(data.gameState);
 });
-
-
 
 
 socket.on('winner', (data) => {
@@ -27,7 +19,6 @@ socket.on('winner', (data) => {
 function updateElements(){
     inputField = document.getElementById("inputField");
     inputButton = document.getElementById("inputButton");
-    startButton = document.getElementById("startButton");
 }
 
 
