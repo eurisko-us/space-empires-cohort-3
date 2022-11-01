@@ -1,6 +1,5 @@
 let inputButton;
 let inputField;
-let startGameButton;
 
 
 
@@ -20,7 +19,6 @@ socket.on('winner', (data) => {
 function updateElements(){
     inputField = document.getElementById("inputField");
     inputButton = document.getElementById("inputButton");
-    startButton = document.getElementById("startButton");
 }
 
 
