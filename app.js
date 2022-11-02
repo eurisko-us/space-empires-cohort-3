@@ -42,4 +42,3 @@ setTimeout(() => {
     game.start()
 },2000)
 
-
