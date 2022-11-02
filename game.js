@@ -208,6 +208,7 @@ class Game {
         this.state.board.spaces = b
         for (var i = 0; i < Object.keys(this.state.allEntities).length; i++){
             let pos = this.state.allEntities[i + 1].position;
+            
             this.state.board.spaces[pos[0]][pos[1]].push(i + 1);
         }
         console.table(this.state.board.spaces)
