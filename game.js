@@ -99,7 +99,7 @@ class Game {
                     allEntities[p1Colony.id] = p1Colony;
                     board.spaces[i][j].push(p1Colony.id);
 
-                    var p1Ship = new Ship(1, 3);
+                    var p1Ship = new Ship(1, 3, "scout");
                     allEntities[p1Ship.id] = p1Ship;
                     board.spaces[i][j].push(p1Ship.id);
 
@@ -113,7 +113,7 @@ class Game {
                     allEntities[p2Colony.id] = p2Colony;
                     board.spaces[i][j].push(p2Colony.id);
 
-                    var p2Ship = new Ship(2, 4)
+                    var p2Ship = new Ship(2, 4, "scout")
                     allEntities[p2Ship.id] = p2Ship;
                     board.spaces[i][j].push(p2Ship.id);
 

@@ -42,6 +42,9 @@ function updateBoard(state) {
             if (space.length === 0) {
                 spaceValue = 0;
                 //if space is empty
+            } else if (space.length > 1){
+                spaceValue = 5;
+
             } else {
 
                     let entity = state.allEntities[space[0]];
@@ -74,11 +77,11 @@ function updateBoard(state) {
                     
             if (spaceValue === 1) {
                 cell.style.backgroundColor = 'blue';
-                cell.innerText = "Player 1: Ship"
+                cell.innerText = "Player 1: " + state.allEntities[space[0]].shipType;
 
             } else if (spaceValue === 2)  {
                 cell.style.backgroundColor = 'red';
-                cell.innerText = "Player 2: Ship" 
+                cell.innerText = "Player 2: " + state.allEntities[space[0]].shipType;
 
             } else if (spaceValue == 3) {
                 cell.style.backgroundColor = 'lightskyblue';
@@ -87,7 +90,9 @@ function updateBoard(state) {
             } else if (spaceValue == 4) {
                 cell.style.backgroundColor = 'crimson';
                 cell.innerText = "Player 2: Colony";
-
+            } else if (spaceValue === 5) {
+                cell.style.backgroundColor = 'orange';
+                var text = "";
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black';
 
