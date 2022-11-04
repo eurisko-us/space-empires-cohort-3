@@ -29,31 +29,43 @@ function updateBoard(state) {
     
     
     for(let i = 0; i < board.numRows; i++) {
+    //loops through rows
+
         let row = boardTable.insertRow();
+
         for(var j = 0; j < board.numCols; j++) {
+        //loops through columns
+
             var spaceValue = null;
             let space = board.spaces[i][j];
+
             if (space.length === 0) {
                 spaceValue = 0;
+                //if space is empty
             } else {
-                for (let i = 0; i < space.length; i++){
-                    let entity = state.allEntities[space[i]];
+
+                    let entity = state.allEntities[space[0]];
                     let type = entity.entityType;
+                    
+
                     if (type === "ship"){
+
                         if (entity.playerNum == 1) {
                             spaceValue = 1;
+
                         } else if (entity.playerNum == 2) {
                             spaceValue = 2;
                         }
 
                     } else if (type === "colony"){
+
                         if (entity.playerNum == 1) {
                             spaceValue = 3;
+
                         } else if (entity.playerNum == 2) {
                             spaceValue = 4;
                         }
                     }
-                }
             }
 
             let cell = row.insertCell();
@@ -63,17 +75,22 @@ function updateBoard(state) {
             if (spaceValue === 1) {
                 cell.style.backgroundColor = 'blue';
                 cell.innerText = "Player 1: Ship"
+
             } else if (spaceValue === 2)  {
                 cell.style.backgroundColor = 'red';
-                cell.innerText = "Player 2: Ship"
+                cell.innerText = "Player 2: Ship" 
+
             } else if (spaceValue == 3) {
                 cell.style.backgroundColor = 'lightskyblue';
-                cell.innerText = "Player 1: Colony"
+                cell.innerText = "Player 1: Colony";
+
             } else if (spaceValue == 4) {
                 cell.style.backgroundColor = 'crimson';
-                cell.innerText = "Player 2: Colony"
+                cell.innerText = "Player 2: Colony";
+
             } else if (spaceValue == 0) {
-                cell.style.backgroundColor = 'black'
+                cell.style.backgroundColor = 'black';
+
             } else {
                 cell.style.backgroundColor = 'yellow';
             }

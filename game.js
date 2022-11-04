@@ -1,3 +1,4 @@
+const { all } = require('express/lib/application');
 const Colony = require('./colonyClass');
 const Ship = require('./shipClass');
 
@@ -97,17 +98,28 @@ class Game {
                     var p1Colony = new Colony(1, true, 1);
                     allEntities[p1Colony.id] = p1Colony;
                     board.spaces[i][j].push(p1Colony.id);
+
                     var p1Ship = new Ship(1, 3);
                     allEntities[p1Ship.id] = p1Ship;
                     board.spaces[i][j].push(p1Ship.id);
+
+                    var p1Dreadnaught = new Ship(1, 5, "dreadnaught");
+                    allEntities[p1Dreadnaught.id] = p1Dreadnaught;
+                    board.spaces[i][j].push(p1Dreadnaught.id);
                 }
+
                 else if (i === 6 && j === 3) {
                     var p2Colony = new Colony(2, true, 2);
                     allEntities[p2Colony.id] = p2Colony;
                     board.spaces[i][j].push(p2Colony.id);
+
                     var p2Ship = new Ship(2, 4)
                     allEntities[p2Ship.id] = p2Ship;
                     board.spaces[i][j].push(p2Ship.id);
+
+                    var p2Dreadnaught = new Ship(2, 6, "dreadnaught");
+                    allEntities[p2Dreadnaught.id] = p2Dreadnaught;
+                    board.spaces[i][j].push(p2Dreadnaught.id);
                 }
             }
         }
@@ -115,14 +127,9 @@ class Game {
         let gameState = {
             board,
             playerToMove: 1,
-            allEntities: {
-                1: p1Colony,
-                2: p2Colony,
-                3: p1Ship,
-                4: p2Ship
-            }
-        };
-
+            allEntities: allEntities
+        }
+        console.log(allEntities)
         return gameState;
     }
 
