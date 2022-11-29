@@ -31,8 +31,8 @@ io.on('connection', (socket) => {
     });
 });
 
-http.listen(3000, () => {
-    console.log('Listening on *:3000');
+http.listen(3003, () => {
+    console.log('Listening on *:3003');
 });
 
 // while (Object.keys(clientSockets).length == 0) {

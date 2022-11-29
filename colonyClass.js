@@ -4,6 +4,7 @@ class Colony{
       this.playerNum = playerNum;
       this.id = entityId;
       this.entityType = "colony";
+      this.shipType = "colony"
       if (home == true) {
         if (this.playerNum == 1) {
           this.position = [0,3];} 
