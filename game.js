@@ -15,6 +15,7 @@ class Game {
         this.state = this.generateInitialGameState();
 
         for (let socketId in this.clientSockets) {
+
             let socket = this.clientSockets[socketId];
 
             socket.emit('gameState', {
@@ -24,6 +25,11 @@ class Game {
     }
 
     start() {
+        this.broadcastMessage('gameState', {
+            gameState: this.state
+        });
+
+
         let gameInterval = setInterval(() => {            let winner = this.checkWinState();
 
             if (winner != 0) {
@@ -34,14 +40,14 @@ class Game {
                 return winner;
             }
 
-            this.makeMove();
             
             
             this.refreshBoard();
-
+            
             this.broadcastMessage('gameState', {
                 gameState: this.state
             });
+            this.makeMove();
 
             // for (let socketId in this.clientSockets) {
             //     let socket = this.clientSockets[socketId];

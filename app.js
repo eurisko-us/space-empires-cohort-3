@@ -24,9 +24,15 @@ io.on('connection', (socket) => {
 
     console.log('Client socket connected:' + socket.id);
 
+    if (Object.keys(clientSockets).length == 1) {
+        game.start();
+    }
+/*     game.broadcastMessage('gameState', {
+        gameState: game.state
+    }); */
+
     socket.on('disconnect', () => {
         console.log('Client socket disconnected: ' + socketId);
-
         delete clientSockets[socketId];
     });
 });
@@ -39,10 +45,12 @@ http.listen(3000, () => {
 //     return
 // }
 
-const game = new Game(clientSockets, randomBoat, randomBoat);
-setTimeout(() => {
-    game.start()
-},2000)
-
-
-
+const game = new Game(clientSockets, manualBoat, randomBoat);
+// if (Object.keys(clientSockets).length == 0) {
+// setTimeout(() => {
+//     console.log("didn't connect")
+// }, 200);
+// }
+// else {
+//     game.start();
+// }
