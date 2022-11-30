@@ -1,3 +1,5 @@
+// const { type } = require("express/lib/response");
+
 const socket = io();
 
 socket.on('gameState', (data) => {
@@ -14,6 +16,7 @@ function updateUI(gameState) {
     let state = gameState;
     updateBoard(state);
 }
+
 
 function updateBoard(state) {
     let board = state.board;
@@ -86,18 +89,25 @@ function updateBoard(state) {
             } else if (spaceValue == 3) {
                 cell.style.backgroundColor = 'lightskyblue';
                 cell.innerText = "Player 1: Colony";
-
+                
             } else if (spaceValue == 4) {
                 cell.style.backgroundColor = 'crimson';
                 cell.innerText = "Player 2: Colony";
+
             } else if (spaceValue === 5) {
                 cell.style.backgroundColor = 'orange';
                 var text = "";
+                for (let i = 0; i < space.length; i++){
+                    text = text + "Player " + state.allEntities[space[i]].playerNum + ": " + state.allEntities[space[i]].shipType+ "      ";
+                }
+                cell.innerText = text;
+
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black';
 
             } else {
                 cell.style.backgroundColor = 'yellow';
+
             }
         }
     }
