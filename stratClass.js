@@ -48,10 +48,10 @@ class randomBoat {
         var randomMoveTwo = moves[Math.floor(Math.random() * moves.length)]
         
         if (this.pid == 1) {
-            return {3 : randomMoveOne, 4: randomMoveTwo}
+            return {3 : randomMoveOne, 5: randomMoveTwo}
         }
         else if (this.pid == 2) {
-            return {5 : randomMoveOne, 6: randomMoveTwo}
+            return {4 : randomMoveOne, 6: randomMoveTwo}
         }
     }
 
@@ -79,11 +79,11 @@ class manualBoat{
                 this.ship_id = parseInt(this.ship_id)
             
                     //makes sure same player doesn't move twice
-                if (this.ship_id == Object.keys(this.moves)[Object.keys(this.moves).length-1]){
+                /* if (this.ship_id == Object.keys(this.moves)[Object.keys(this.moves).length-1]){
                     console.log("Error: same player moved consecutively ");
                     break;
 
-                }
+                } */
                 this.ship_move = (rls.question('input move here '))
             }
             else{

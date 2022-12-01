@@ -43,12 +43,12 @@ class Game {
 
             
             
-            
+            //this.refreshBoard();
+            this.makeMove();
+            this.refreshBoard();
             this.broadcastMessage('gameState', {
                 gameState: this.state
             });
-
-            this.makeMove();
 
             this.combatPhase();
 
@@ -180,12 +180,12 @@ class Game {
 
     moveShips(moves) {
         let shipIds = Object.keys(moves);
-        //for(let i = 0; i < ships.length; i++){
         for (let i = 0; i < shipIds.length; i++) {
             let ship = this.state.allEntities[shipIds[i]];
             let move = moves[shipIds[i]];
 
             if (!ship.moveable) return;
+            if (ship.playerNum != this.state.playerToMove) return;
 
             if (move === "left") {
                 if (ship.position[1] != 0) {
