@@ -30,7 +30,8 @@ class Game {
         });
 
 
-        let gameInterval = setInterval(() => {            let winner = this.checkWinState();
+        let gameInterval = setInterval(() => {
+            let winner = this.checkWinState();
 
             if (winner != 0) {
                 clearInterval(gameInterval);
@@ -42,12 +43,14 @@ class Game {
 
             
             
-            this.refreshBoard();
             
             this.broadcastMessage('gameState', {
                 gameState: this.state
             });
+
             this.makeMove();
+
+            this.combatPhase();
 
             // for (let socketId in this.clientSockets) {
             //     let socket = this.clientSockets[socketId];
@@ -98,7 +101,7 @@ class Game {
         var allEntities = {};
 
         for(let i = 0; i < board.numRows; i++) {
-            for(let j = 0; j < board.numCols; j++) {   
+            for(let j = 0; j < board.numCols; j++) {
                 board.spaces[i][j] = [];
                 if (i === 0 && j === 3) {
                     var p1Colony = new Colony(1, true, 1);
@@ -224,6 +227,30 @@ class Game {
             this.state.board.spaces[pos[0]][pos[1]].push(i + 1);
         }
         console.table(this.state.board.spaces)
+    }
+
+    combatPhase() {
+        for (let i = 0; i < this.state.board.numRows; i++) {
+            for (let j = 0; j < this.state.board.numCols; j++) {
+                let currentBoardSpace = this.board[i][j];
+                if (currentBoardSpace.length > 1) {
+                    let firstShipId = currentBoardSpace[0];
+                    let firstShipPlayerNum = this.state.allEntities[firstShipId]
+                    for (let k = 1; k < currentBoardSpace.length; k++) {
+                        
+                        let currentShipId = currentBoardSpace[k];
+                        let currentShipPlayerNum = this.state.allEntities[currentShipId];
+                        if (firstShipPlayerNum != currentShipPlayerNum) {
+                            // do sth
+                        }
+                    
+                        
+
+
+                    }
+                }
+            }
+        }
     }
 }
 
