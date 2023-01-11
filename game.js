@@ -25,10 +25,7 @@ class Game {
     }
 
     start() {
-        this.broadcastMessage('gameState', {
-            gameState: this.state
-        });
-
+        this.broadcastBoard(true)
 
         let gameInterval = setInterval(() => {
             let winner = this.checkWinState();
@@ -46,11 +43,10 @@ class Game {
             //this.refreshBoard();
             this.makeMove();
             this.refreshBoard();
-            this.broadcastMessage('gameState', {
-                gameState: this.state
-            });
 
-            this.combatPhase();
+            this.broadcastBoard(true)
+
+//            this.combatPhase();
 
             // for (let socketId in this.clientSockets) {
             //     let socket = this.clientSockets[socketId];
@@ -67,6 +63,15 @@ class Game {
             let socket = this.clientSockets[socketId];
 
             socket.emit(msgName, msgJSON);
+        }
+    }
+
+    broadcastBoard(log=false){
+        this.broadcastMessage('gameState', {
+            gameState: this.state
+        });
+        if (log == true){
+            console.log("broadcasted board")
         }
     }
 
@@ -87,6 +92,7 @@ class Game {
         return 0;
     }
     generateInitialGameState() {
+        console.log("initializing game")
         let board = {
             numRows: 7,
             numCols: 7, 
@@ -216,6 +222,7 @@ class Game {
     }
 
     refreshBoard() {
+        console.log("board refreshing")
         var b = [];
         for (let i = 0; i < 7; i++){
             var a = [[], [], [], [], [], [], []];
@@ -229,29 +236,29 @@ class Game {
         console.table(this.state.board.spaces)
     }
 
-    combatPhase() {
-        for (let i = 0; i < this.state.board.numRows; i++) {
-            for (let j = 0; j < this.state.board.numCols; j++) {
-                let currentBoardSpace = this.board[i][j];
-                if (currentBoardSpace.length > 1) {
-                    let firstShipId = currentBoardSpace[0];
-                    let firstShipPlayerNum = this.state.allEntities[firstShipId]
-                    for (let k = 1; k < currentBoardSpace.length; k++) {
+    // combatPhase() {
+    //     for (let i = 0; i < this.state.board.numRows; i++) {
+    //         for (let j = 0; j < this.state.board.numCols; j++) {
+    //             let currentBoardSpace = this.board[i][j];
+    //             if (currentBoardSpace.length > 1) {
+    //                 let firstShipId = currentBoardSpace[0];
+    //                 let firstShipPlayerNum = this.state.allEntities[firstShipId]
+    //                 for (let k = 1; k < currentBoardSpace.length; k++) {
                         
-                        let currentShipId = currentBoardSpace[k];
-                        let currentShipPlayerNum = this.state.allEntities[currentShipId];
-                        if (firstShipPlayerNum != currentShipPlayerNum) {
-                            // do sth
-                        }
+    //                     let currentShipId = currentBoardSpace[k];
+    //                     let currentShipPlayerNum = this.state.allEntities[currentShipId];
+    //                     if (firstShipPlayerNum != currentShipPlayerNum) {
+    //                         // do sth
+    //                     }
                     
                         
 
 
-                    }
-                }
-            }
-        }
-    }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 module.exports = Game;

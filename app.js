@@ -45,7 +45,7 @@ http.listen(3003, () => {
 //     return
 // }
 
-const game = new Game(clientSockets, manualBoat, manualBoat);
+const game = new Game(clientSockets, randomBoat, randomBoat);
 // if (Object.keys(clientSockets).length == 0) {
 // setTimeout(() => {
 //     console.log("didn't connect")
