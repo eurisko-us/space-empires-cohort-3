@@ -230,26 +230,58 @@ class Game {
     }
 
     combatPhase() {
+        let combatSpaces = this.findCombatSpaces();
+        this.shipScreening(combatSpaces);
+    }
+
+    findCombatSpaces() {
+
+        let combatSpaces = [];
+
         for (let i = 0; i < this.state.board.numRows; i++) {
             for (let j = 0; j < this.state.board.numCols; j++) {
-                let currentBoardSpace = this.board[i][j];
+
+                let currentBoardSpace = this.state.board.spaces[i][j];
                 if (currentBoardSpace.length > 1) {
                     let firstShipId = currentBoardSpace[0];
                     let firstShipPlayerNum = this.state.allEntities[firstShipId]
                     for (let k = 1; k < currentBoardSpace.length; k++) {
-                        
+
                         let currentShipId = currentBoardSpace[k];
                         let currentShipPlayerNum = this.state.allEntities[currentShipId];
                         if (firstShipPlayerNum != currentShipPlayerNum) {
-                            // do sth
+                            combatSpaces.push([i, j]);
                         }
-                    
-                        
+
+
 
 
                     }
                 }
             }
+        }
+
+        return combatSpaces;
+    }
+
+    shipScreening(combatSpaces) {
+        for (const combatSpace of combatSpaces) {
+            let ships = this.state.board.spaces[combatSpace[0]][combatSpace[1]];
+            let numPlayerOneShips = ships.filter(ship => ship.playerNum == 1).length;
+            let numPlayerTwoShips = ships.filter(ship => ship.playerNum == 2).length;
+            if (numPlayerOneShips == numPlayerTwoShips) {
+                return;
+            }
+
+            else if (numPlayerOneShips > numPlayerTwoShips) {
+                // player one can opt to move ships off 
+
+            }
+
+            else {
+              // player two can opt to move ships off
+            }
+            
         }
     }
 }
