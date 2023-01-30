@@ -17,7 +17,6 @@ function updateUI(gameState) {
     updateBoard(state);
 }
 
-
 function updateBoard(state) {
     let board = state.board;
     // Delete board table if it already exists because we're just going to recreate it
@@ -79,35 +78,31 @@ function updateBoard(state) {
             
                     
             if (spaceValue === 1) {
-                cell.style.backgroundColor = 'blue';
-                cell.innerText = "Player 1: " + state.allEntities[space[0]].shipType;
+                cell.style.backgroundColor = 'green';
+                cell.innerText = "Player 1: " + state.allEntities[space[0]].shipType + " (" + space[0] + ")";
 
             } else if (spaceValue === 2)  {
                 cell.style.backgroundColor = 'red';
-                cell.innerText = "Player 2: " + state.allEntities[space[0]].shipType;
+                cell.innerText = "Player 2: " + state.allEntities[space[0]].shipType + " (" + space[0] + ")";
 
             } else if (spaceValue == 3) {
-                cell.style.backgroundColor = 'lightskyblue';
-                cell.innerText = "Player 1: Colony";
+                cell.style.backgroundColor = 'lightgreen';
+                cell.innerText = "Player 1: Colony (1)";
                 
             } else if (spaceValue == 4) {
                 cell.style.backgroundColor = 'crimson';
-                cell.innerText = "Player 2: Colony";
+                cell.innerText = "Player 2: Colony (2)";
 
             } else if (spaceValue === 5) {
                 cell.style.backgroundColor = 'orange';
                 var text = "";
                 for (let i = 0; i < space.length; i++){
-                    text = text + "Player " + state.allEntities[space[i]].playerNum + ": " + state.allEntities[space[i]].shipType+ "      ";
+                    text = text + "Player " + state.allEntities[space[i]].playerNum + ": " + state.allEntities[space[i]].shipType + " (" + space[i] + ") \n";
                 }
                 cell.innerText = text;
 
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black';
-
-            } else {
-                cell.style.backgroundColor = 'yellow';
-
             }
         }
     }
