@@ -41,8 +41,6 @@ class Game {
                 return winner;
             }
 
-            
-            
             //this.refreshBoard();
             this.makeMove();
             this.refreshBoard();
