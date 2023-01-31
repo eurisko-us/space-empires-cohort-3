@@ -50,7 +50,7 @@ class Game {
                 gameState: this.state
             });
 
-            this.combatPhase();
+            //this.combatPhase();
 
             // for (let socketId in this.clientSockets) {
             //     let socket = this.clientSockets[socketId];
