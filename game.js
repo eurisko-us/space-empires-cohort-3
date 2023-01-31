@@ -1,6 +1,7 @@
 const { all } = require('express/lib/application');
 const Colony = require('./colonyClass');
 const Ship = require('./shipClass');
+const { manualBoat } = require('./stratClass');
 
 
 class Game {
@@ -41,8 +42,8 @@ class Game {
                 return winner;
             }
 
-            
-            
+
+
             //this.refreshBoard();
             this.makeMove();
             this.refreshBoard();
@@ -50,7 +51,7 @@ class Game {
                 gameState: this.state
             });
 
-            this.combatPhase();
+            // this.combatPhase();
 
             // for (let socketId in this.clientSockets) {
             //     let socket = this.clientSockets[socketId];
@@ -144,6 +145,11 @@ class Game {
 
     makeMove() {
 
+        if (this.players[this.state.playerToMove - 1] == manualBoat){
+            prompt_text = ""
+            move = prompt()
+        }
+
         let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
 
         this.moveShips(move);
@@ -229,29 +235,29 @@ class Game {
         console.table(this.state.board.spaces)
     }
 
-    combatPhase() {
-        for (let i = 0; i < this.state.board.numRows; i++) {
-            for (let j = 0; j < this.state.board.numCols; j++) {
-                let currentBoardSpace = this.board[i][j];
-                if (currentBoardSpace.length > 1) {
-                    let firstShipId = currentBoardSpace[0];
-                    let firstShipPlayerNum = this.state.allEntities[firstShipId]
-                    for (let k = 1; k < currentBoardSpace.length; k++) {
+    // combatPhase() {
+    //     for (let i = 0; i < this.state.board.numRows; i++) {
+    //         for (let j = 0; j < this.state.board.numCols; j++) {
+    //             let currentBoardSpace = this.board[i][j];
+    //             if (currentBoardSpace.length > 1) {
+    //                 let firstShipId = currentBoardSpace[0];
+    //                 let firstShipPlayerNum = this.state.allEntities[firstShipId]
+    //                 for (let k = 1; k < currentBoardSpace.length; k++) {
                         
-                        let currentShipId = currentBoardSpace[k];
-                        let currentShipPlayerNum = this.state.allEntities[currentShipId];
-                        if (firstShipPlayerNum != currentShipPlayerNum) {
-                            // do sth
-                        }
+    //                     let currentShipId = currentBoardSpace[k];
+    //                     let currentShipPlayerNum = this.state.allEntities[currentShipId];
+    //                     if (firstShipPlayerNum != currentShipPlayerNum) {
+    //                         // do sth
+    //                     }
                     
                         
 
 
-                    }
-                }
-            }
-        }
-    }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 module.exports = Game;

@@ -14,6 +14,7 @@ socket.on('winner', (data) => {
 
 function updateUI(gameState) {
     let state = gameState;
+    updateButton(state);
     updateBoard(state);
 }
 
@@ -107,4 +108,14 @@ function updateBoard(state) {
         }
     }
 
+}
+
+function updateButton(state){
+    let button = document.getElementById("submit")
+    if (!button){
+        button = document.createElement("button")
+        button.id = "submit"
+        document.appendChild(button)
+    }
+    button.innerText = state.playerToMove
 }
