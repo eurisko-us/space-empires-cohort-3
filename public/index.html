@@ -8,15 +8,21 @@
         <script src="js/game-ui.js"></script>         
     </head>
 
-   <body>
-        <h1>hi</h1>
-        <!-- starts the process of aligning prompt, board -->
-        <article id="grid1">
-            <div class = "user_interactive">
-            <input class="prompt">
-            <button class="submit">submit button</button>
+   <body>     
+
+        <h1>Space Empires</h1>
+        <!-- div is just for backend grouping, nothing special -->
+        <div style = "width:100%;">
+            <div  style="width:40%; float:left">
+                <div id="inputSegment">
+                <input style="size:1000px"> <br>
+                <button>submit</button> 
+                </div>
             </div>
-        </article>
-        <h2> line 2</h2>
+            <article id="boardWrapper" style = "width:60%; float:right"> </article>
+        </div>
+        <!-- resets the wrapping back-->
+        <br style="clear:both;"/>
+        <h2> logs and stuff</h2>
    </body>
 </html>

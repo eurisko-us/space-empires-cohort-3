@@ -3,23 +3,15 @@ td.boardSpace {
     height: 90px;
     text-align: center;
 }
-.prompt{grid-area:prompt;}
-.table{grid-area:tableloc;}
-.sumbit{grid-area:submit;}
-.user_interactive{grid-area:user;}
 
-#grid1{
-    display:grid;
-    grid-template-areas:
-    "user" "user" "tableloc" "tableloc" "tableloc"
-    "user" "user" "tableloc" "tableloc" "tableloc" ;
 
+
+
+
+#inputSegment{
+    padding-left: 20%;
+    padding-top: 30%;
 }
-
-
-
-
-
 
 h1{
     text-align:center; 
