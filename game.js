@@ -41,8 +41,17 @@ class Game {
                 return winner;
             }
 
+            if (this.phase == 'movement') {
+                this.movementPhase();
+                this.refreshBoard();
+            } else if (this.phase == 'combat') {
+                // this.combatPhase();
+                console.log('combat phase was triggered');
+                this.phase = 'movement';
+            }
+
+
             //this.refreshBoard();
-            this.makeMove();
             this.refreshBoard();
             this.broadcastMessage('gameState', {
                 gameState: this.state
@@ -80,14 +89,14 @@ class Game {
             else if (ship.playerNum == 2 && (ship.position[0] == 0) && (ship.position[1] == 3)) {
                 console.log('Player 2 won!');
                 return 2;
-          }
+            }
         }
         return 0;
     }
     generateInitialGameState() {
         let board = {
             numRows: 7,
-            numCols: 7, 
+            numCols: 7,
             spaces: [],
         };
 
@@ -98,8 +107,8 @@ class Game {
 
         var allEntities = {};
 
-        for(let i = 0; i < board.numRows; i++) {
-            for(let j = 0; j < board.numCols; j++) {
+        for (let i = 0; i < board.numRows; i++) {
+            for (let j = 0; j < board.numCols; j++) {
                 board.spaces[i][j] = [];
                 if (i === 0 && j === 3) {
                     var p1Colony = new Colony(1, true, 1);
@@ -140,41 +149,29 @@ class Game {
         return gameState;
     }
 
-    makeMove() {
+    movementPhase() {
+        for (let player of this.players) {
+            this.currentPlayerNum = this.players.findIndex(player) + 1;
+            if (player.isManual) {
+                // send prompt to front-end
+            }
+            else {
+                let move = player.chooseMove(this.state.board);
+                this.moveShips(move);
+            }
+        }
 
+    }
+
+    makeMove() {
         let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
 
         this.moveShips(move);
-        //Making sure that colonies dont move`
-        // let board = this.state["board"]["spaces"]
-        // if (board[0][3][0] instanceof Colony != True) {
-        //     console.log("Error : Colony moved")
-        // }
-        // //making sure that ships don't duplicate
-        // let numentity = 0
-        // for (let i = 0; i < board.length; i++) {
-        //     for (let j = 0; j < board[0].length; j++) {
-        //         for (let k = 0; k < board[0][0]; k++) {
-        //             if (board[i][j][k] != null) {
-        //                 numentity += 1
-        //             }
-        //         }
-        //     }
-        // }
-        // if (numentity != this.allEntities.length) {
-        //     console.log("Error: Duplicating ships occurred")
-        // }
-        //making sure that ships don't teleport
-
 
         this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
 
-        //REBUGING
-        // console.log(this.state["board"])
-
-
-
     }
+
 
     moveShips(moves) {
         let shipIds = Object.keys(moves);
@@ -215,12 +212,12 @@ class Game {
 
     refreshBoard() {
         var b = [];
-        for (let i = 0; i < 7; i++){
+        for (let i = 0; i < 7; i++) {
             var a = [[], [], [], [], [], [], []];
             b.push(a);
         }
         this.state.board.spaces = b
-        for (var i = 0; i < Object.keys(this.state.allEntities).length; i++){
+        for (var i = 0; i < Object.keys(this.state.allEntities).length; i++) {
             let pos = this.state.allEntities[i + 1].position;
             this.state.board.spaces[pos[0]][pos[1]].push(i + 1);
         }
@@ -235,14 +232,14 @@ class Game {
                     let firstShipId = currentBoardSpace[0];
                     let firstShipPlayerNum = this.state.allEntities[firstShipId]
                     for (let k = 1; k < currentBoardSpace.length; k++) {
-                        
+
                         let currentShipId = currentBoardSpace[k];
                         let currentShipPlayerNum = this.state.allEntities[currentShipId];
                         if (firstShipPlayerNum != currentShipPlayerNum) {
                             // do sth
                         }
-                    
-                        
+
+
 
 
                     }
