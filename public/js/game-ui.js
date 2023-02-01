@@ -19,7 +19,7 @@ function updateUI(gameState) {
 
 function updateBoard(state) {
     let board = state.board;
-    let boardWrapper = document.getElementById("grid1");
+    let boardWrapper = document.getElementById("boardWrapper");
     // Delete board table if it already exists because we're just going to recreate it
     let boardTable = document.getElementById('board');
     if (boardTable) {
