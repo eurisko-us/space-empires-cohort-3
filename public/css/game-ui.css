@@ -4,6 +4,18 @@ td.boardSpace {
     text-align: center;
 }
 
+
+
+
+
+#inputSegment{
+    padding-left: 20%;
+    padding-top: 30%;
+}
+
+h1{
+    text-align:center; 
+}
 table {
     margin-top: auto;
     margin-bottom: auto;
@@ -12,4 +24,5 @@ table {
 body {
     height: 100%;
 }
+
 

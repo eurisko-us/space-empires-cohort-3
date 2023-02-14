@@ -19,15 +19,16 @@ function updateUI(gameState) {
 
 function updateBoard(state) {
     let board = state.board;
+    let boardWrapper = document.getElementById("boardWrapper");
     // Delete board table if it already exists because we're just going to recreate it
     let boardTable = document.getElementById('board');
     if (boardTable) {
-        document.body.removeChild(boardTable);
+        boardWrapper.removeChild(boardTable);
     }
 
     boardTable = document.createElement('table');
     boardTable.id = 'board';
-    document.body.appendChild(boardTable);
+    boardWrapper.appendChild(boardTable);
     
     
     for(let i = 0; i < board.numRows; i++) {
