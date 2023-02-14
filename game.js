@@ -12,6 +12,8 @@ class Game {
         this.numRows = 7;
         this.numCols = 7;
 
+        this.playerResponse = null;
+
         this.state = this.generateInitialGameState();
 
         for (let socketId in this.clientSockets) {
@@ -57,7 +59,6 @@ class Game {
                 gameState: this.state
             });
 
-            this.combatPhase();
 
             // for (let socketId in this.clientSockets) {
             //     let socket = this.clientSockets[socketId];
@@ -151,14 +152,17 @@ class Game {
 
     movementPhase() {
         for (let player of this.players) {
-            this.currentPlayerNum = this.players.findIndex(player) + 1;
+            this.currentPlayerNum = player.playerNum;
+            let move;
             if (player.isManual) {
-                // send prompt to front-end
+                this.displayPrompt(`Enter moves for Player ${this.currentPlayerNum}`);
+                move = this.playerReponse;
             }
             else {
-                let move = player.chooseMove(this.state.board);
-                this.moveShips(move);
+                move = player.chooseMove(this.state.board);
             }
+            console.log(`move was ${move}`);
+            this.moveShips(move);
         }
 
     }
@@ -227,7 +231,7 @@ class Game {
     combatPhase() {
         for (let i = 0; i < this.state.board.numRows; i++) {
             for (let j = 0; j < this.state.board.numCols; j++) {
-                let currentBoardSpace = this.board[i][j];
+                let currentBoardSpace = this.state.board[i][j];
                 if (currentBoardSpace.length > 1) {
                     let firstShipId = currentBoardSpace[0];
                     let firstShipPlayerNum = this.state.allEntities[firstShipId]
