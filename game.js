@@ -43,13 +43,13 @@ class Game {
                 return winner;
             }
 
-            if (this.phase == 'movement') {
+            if (this.state.phase == 'movement') {
                 this.movementPhase();
                 this.refreshBoard();
-            } else if (this.phase == 'combat') {
+            } else if (this.state.phase == 'combat') {
                 // this.combatPhase();
                 console.log('combat phase was triggered');
-                this.phase = 'movement';
+                this.state.phase = 'movement';
             }
 
 
@@ -144,26 +144,42 @@ class Game {
         let gameState = {
             board,
             playerToMove: 1,
-            allEntities: allEntities
+            allEntities: allEntities,
+            phase: 'movement'
         }
         console.log(allEntities)
         return gameState;
     }
 
     movementPhase() {
-        for (let player of this.players) {
-            this.currentPlayerNum = player.playerNum;
-            let move;
-            if (player.isManual) {
-                this.displayPrompt(`Enter moves for Player ${this.currentPlayerNum}`);
-                move = this.playerReponse;
-            }
-            else {
-                move = player.chooseMove(this.state.board);
-            }
-            console.log(`move was ${move}`);
-            this.moveShips(move);
+        let player = this.players[this.state.playerToMove - 1];
+        let move;
+        let shipIds = Object.keys(this.state.allEntities);
+        let shipsToMove = shipIds.filter(id => this.state.allEntities[id].movable && this.state.allEntities[id].playerNum == this.state.playerToMove && !this.state.allEntities[id].chosenMove);
+        let shipToMove = shipsToMove[0];
+
+        if (!shipsToMove) {
+            this.state.playerToMove = [1, 2][this.state.playerToMove - 1];
+            this.playerResponse = null;
+            return
         }
+
+
+        if (player.isManual) {
+            this.displayPrompt(`Enter moves for Player ${this.playerToMove}`);
+            move = this.playerReponse;
+        } else {
+            move = player.chooseMove(this.state.board);
+            console.log(move);
+        }
+        
+        if (shipToMove.chosenMove) {
+            this.moveShips(move);
+            console.log('ships were moved');
+            this.playerResponse = null;
+        }
+
+        console.log(`move was ${move}`);
 
     }
 
@@ -183,7 +199,7 @@ class Game {
             let ship = this.state.allEntities[shipIds[i]];
             let move = moves[shipIds[i]];
 
-            if (!ship.moveable) return;
+            if (!ship.movable) return;
             if (ship.playerNum != this.state.playerToMove) return;
 
             if (move === "left") {
