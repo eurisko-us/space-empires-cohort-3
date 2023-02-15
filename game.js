@@ -154,22 +154,35 @@ class Game {
     movementPhase() {
         let player = this.players[this.state.playerToMove - 1];
         let move;
-        let shipIds = Object.keys(this.state.allEntities);
+        let shipIds = Array.from(Object.keys(this.state.allEntities), string => parseInt(string));
         let shipsToMove = shipIds.filter(id => this.state.allEntities[id].movable && this.state.allEntities[id].playerNum == this.state.playerToMove && !this.state.allEntities[id].chosenMove);
-        let shipToMove = shipsToMove[0];
+        let shipToMoveId = shipsToMove[0];
+        let shipToMove = this.state.allEntities[shipToMoveId]; 
 
-        if (!shipsToMove) {
-            this.state.playerToMove = [1, 2][this.state.playerToMove - 1];
+        if (!shipToMoveId) {
+            let shipIdsOfCurrentPlayer = shipIds.filter(id => this.state.allEntities[id].playerNum == this.state.playerToMove);
+            for (const shipId of shipIdsOfCurrentPlayer) {
+                this.state.allEntities[shipId].chosenMove = null;
+                // resetting chosen move
+            }
+            this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
             this.playerResponse = null;
+
+            if (this.state.playerToMove == 1) {
+                this.state.phase = 'combat';
+            }
+
             return
         }
 
 
+        console.log('ship to move: ' + shipToMoveId);
         if (player.isManual) {
             this.displayPrompt(`Enter moves for Player ${this.playerToMove}`);
             move = this.playerReponse;
         } else {
             move = player.chooseMove(this.state.board);
+            shipToMove.chosenMove = move;
             console.log(move);
         }
         
