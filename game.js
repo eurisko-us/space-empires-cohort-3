@@ -175,6 +175,7 @@ class Game {
             return
         }
 
+        this.state.shipToMoveId = shipToMoveId;
 
         console.log('ship to move: ' + shipToMoveId);
         if (player.isManual) {
@@ -187,7 +188,7 @@ class Game {
         }
         
         if (shipToMove.chosenMove) {
-            this.moveShips(move);
+            this.moveShip(move);
             console.log('ships were moved');
             this.playerResponse = null;
         }
@@ -199,46 +200,42 @@ class Game {
     makeMove() {
         let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
 
-        this.moveShips(move);
+        this.moveShip(move);
 
         this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
 
     }
 
 
-    moveShips(moves) {
-        let shipIds = Object.keys(moves);
-        for (let i = 0; i < shipIds.length; i++) {
-            let ship = this.state.allEntities[shipIds[i]];
-            let move = moves[shipIds[i]];
+    moveShip(moveObj) {
+        if (!this.state.shipToMoveId in moveObj) return;
 
-            if (!ship.movable) return;
-            if (ship.playerNum != this.state.playerToMove) return;
+        let move = moveObj[this.state.shipToMoveId];
+        let ship = this.state.allEntities[this.state.shipToMoveId];
 
-            if (move === "left") {
-                if (ship.position[1] != 0) {
-                    ship.position[1] -= 1;
-                } else {
-                    console.log("You can't move left!");
-                }
-            } else if (move === "right") {
-                if (ship.position[1] != 6) {
-                    ship.position[1] += 1;
-                } else {
-                    console.log("You can't move right!");
-                }
-            } else if (move === "up") {
-                if (ship.position[0] != 0) {
-                    ship.position[0] -= 1;
-                } else {
-                    console.log("You can't move up!");
-                }
-            } else if (move === "down") {
-                if (ship.position[0] != 6) {
-                    ship.position[0] += 1;
-                } else {
-                    console.log("You can't move down!");
-                }
+        if (move === "left") {
+            if (ship.position[1] != 0) {
+                ship.position[1] -= 1;
+            } else {
+                console.log("You can't move left!");
+            }
+        } else if (move === "right") {
+            if (ship.position[1] != 6) {
+                ship.position[1] += 1;
+            } else {
+                console.log("You can't move right!");
+            }
+        } else if (move === "up") {
+            if (ship.position[0] != 0) {
+                ship.position[0] -= 1;
+            } else {
+                console.log("You can't move up!");
+            }
+        } else if (move === "down") {
+            if (ship.position[0] != 6) {
+                ship.position[0] += 1;
+            } else {
+                console.log("You can't move down!");
             }
         }
     }
