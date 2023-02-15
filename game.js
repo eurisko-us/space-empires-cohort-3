@@ -25,6 +25,14 @@ class Game {
             });
         }
     }
+    checkSockets(statement,value){
+        for (let socketId in thisclientSocket){
+            let socket = this.clientSockets[socketId]
+            
+            socket.on
+            }
+    }
+
 
     start() {
         this.broadcastMessage('gameState', {
@@ -32,9 +40,10 @@ class Game {
         });
 
 
+
         let gameInterval = setInterval(() => {
             let winner = this.checkWinState();
-
+            //socket stuff
             if (winner != 0) {
                 clearInterval(gameInterval);
                 this.broadcastMessage('winner', {

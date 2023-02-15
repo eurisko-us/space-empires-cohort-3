@@ -7,9 +7,11 @@ socket.on('gameState', (data) => {
     updateUI(data.gameState);
 });
 
-
 socket.on('winner', (data) => {
     alert('Player ' + data.winner + ' won!');
+})
+socket.on("getID", ()=>{
+    parseId()
 })
 
 function updateUI(gameState) {
@@ -108,4 +110,21 @@ function updateBoard(state) {
         }
     }
 
+}
+
+submitButton = Document.getElementById("submit")
+submitButton.addEventListener("click",updateMoveValue)
+
+function updateMoveValue(){
+    inputValue = document.getElementById("inputField").value
+    socket.emit("manualValue",inputValue)
+}
+
+
+
+function parseId(){
+    let text = document.getElementById("text").innerHTML
+    let endingIndex = text.search("move ship ") + 10
+    let id = parseInt(text.slice(endingIndex))
+    alert(id)
 }
