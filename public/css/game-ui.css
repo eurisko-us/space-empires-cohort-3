@@ -10,7 +10,6 @@ td.boardSpace {
 
 #inputSegment{
     padding-left: 20%;
-    padding-top: 30%;
 }
 
 h1{
@@ -19,6 +18,10 @@ h1{
 table {
     margin-top: auto;
     margin-bottom: auto;
+}
+#text{
+    padding-left: 20%;
+    padding-top:30%;
 }
 
 body {

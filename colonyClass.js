@@ -1,6 +1,6 @@
 class Colony{
     constructor(playerNum, home=false, entityId) {
-      this.moveable = false;
+      this.movable = false;
       this.playerNum = playerNum;
       this.id = entityId;
       this.entityType = "colony";
