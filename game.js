@@ -52,13 +52,13 @@ class Game {
                 return winner;
             }
 
-            if (this.phase == 'movement') {
+            if (this.state.phase == 'movement') {
                 this.movementPhase();
                 this.refreshBoard();
-            } else if (this.phase == 'combat') {
+            } else if (this.state.phase == 'combat') {
                 // this.combatPhase();
                 console.log('combat phase was triggered');
-                this.phase = 'movement';
+                this.state.phase = 'movement';
             }
 
 
@@ -153,72 +153,98 @@ class Game {
         let gameState = {
             board,
             playerToMove: 1,
-            allEntities: allEntities
+            allEntities: allEntities,
+            phase: 'movement'
         }
         console.log(allEntities)
         return gameState;
     }
 
     movementPhase() {
-        for (let player of this.players) {
-            this.currentPlayerNum = player.playerNum;
-            let move;
-            if (player.isManual) {
-                this.displayPrompt(`Enter moves for Player ${this.currentPlayerNum}`);
-                move = this.playerReponse;
+        let player = this.players[this.state.playerToMove - 1];
+        let move;
+        let shipIds = Array.from(Object.keys(this.state.allEntities), string => parseInt(string));
+        let shipsToMove = shipIds.filter(id => this.state.allEntities[id].movable && this.state.allEntities[id].playerNum == this.state.playerToMove && !this.state.allEntities[id].chosenMove);
+        let shipToMoveId = shipsToMove[0];
+        let shipToMove = this.state.allEntities[shipToMoveId]; 
+
+        if (!shipToMoveId) {
+            let shipIdsOfCurrentPlayer = shipIds.filter(id => this.state.allEntities[id].playerNum == this.state.playerToMove);
+            for (const shipId of shipIdsOfCurrentPlayer) {
+                this.state.allEntities[shipId].chosenMove = null;
+                // resetting chosen move
             }
-            else {
-                move = player.chooseMove(this.state.board);
+            this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
+            this.playerResponse = null;
+
+            if (this.state.playerToMove == 1) {
+                this.state.phase = 'combat';
             }
-            console.log(`move was ${move}`);
-            this.moveShips(move);
+
+            return
         }
+
+        this.state.shipToMoveId = shipToMoveId;
+
+        console.log('ship to move: ' + shipToMoveId);
+        if (player.isManual) {
+            this.displayPrompt(`Enter moves for Player ${this.playerToMove}`);
+            move = this.playerReponse;
+        } else {
+            move = player.chooseMove(this.state.board);
+            shipToMove.chosenMove = move;
+            console.log(move);
+        }
+        
+        if (shipToMove.chosenMove) {
+            this.moveShip(move);
+            console.log('ships were moved');
+            this.playerResponse = null;
+        }
+
+        console.log(`move was ${move}`);
 
     }
 
     makeMove() {
         let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
 
-        this.moveShips(move);
+        this.moveShip(move);
 
         this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
 
     }
 
 
-    moveShips(moves) {
-        let shipIds = Object.keys(moves);
-        for (let i = 0; i < shipIds.length; i++) {
-            let ship = this.state.allEntities[shipIds[i]];
-            let move = moves[shipIds[i]];
+    moveShip(moveObj) {
+        if (!this.state.shipToMoveId in moveObj) return;
 
-            if (!ship.moveable) return;
-            if (ship.playerNum != this.state.playerToMove) return;
+        let move = moveObj[this.state.shipToMoveId];
+        let ship = this.state.allEntities[this.state.shipToMoveId];
 
-            if (move === "left") {
-                if (ship.position[1] != 0) {
-                    ship.position[1] -= 1;
-                } else {
-                    console.log("You can't move left!");
-                }
-            } else if (move === "right") {
-                if (ship.position[1] != 6) {
-                    ship.position[1] += 1;
-                } else {
-                    console.log("You can't move right!");
-                }
-            } else if (move === "up") {
-                if (ship.position[0] != 0) {
-                    ship.position[0] -= 1;
-                } else {
-                    console.log("You can't move up!");
-                }
-            } else if (move === "down") {
-                if (ship.position[0] != 6) {
-                    ship.position[0] += 1;
-                } else {
-                    console.log("You can't move down!");
-                }
+        if (move === "left") {
+            if (ship.position[1] != 0) {
+                ship.position[1] -= 1;
+            } else {
+                console.log("You can't move left!");
+            }
+        } else if (move === "right") {
+            if (ship.position[1] != 6) {
+                ship.position[1] += 1;
+            } else {
+                console.log("You can't move right!");
+            }
+        } else if (move === "up") {
+            if (ship.position[0] != 0) {
+                ship.position[0] -= 1;
+            } else {
+                console.log("You can't move up!");
+            }
+        } else if (move === "down") {
+            if (ship.position[0] != 6) {
+                ship.position[0] += 1;
+            } else {
+                console.log("You can't move down!");
             }
         }
     }
