@@ -76,7 +76,7 @@ class Game {
             //         gameState: this.state
             //     });
             // }
-        }, 100);
+        }, 50);
     }
 
     broadcastMessage(msgName, msgJSON) {
@@ -191,7 +191,8 @@ class Game {
             this.displayPrompt(`Enter moves for Player ${this.playerToMove}`);
             move = this.playerReponse;
         } else {
-            move = player.chooseMove(this.state.board);
+            let deepcopyOfGameState = JSON.parse(JSON.stringify(this.state));
+            move = player.chooseMove(deepcopyOfGameState, shipToMoveId);
             shipToMove.chosenMove = move;
             console.log(move);
         }
@@ -216,10 +217,7 @@ class Game {
     }
 
 
-    moveShip(moveObj) {
-        if (!this.state.shipToMoveId in moveObj) return;
-
-        let move = moveObj[this.state.shipToMoveId];
+    moveShip(move) {
         let ship = this.state.allEntities[this.state.shipToMoveId];
 
         if (move === "left") {

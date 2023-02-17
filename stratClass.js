@@ -28,12 +28,12 @@ class dumbBoat{
         this.playerNum = playerNum;
         this.isManual = false;
     }
-    chooseMove(board){
+    chooseMove(gameState, shipToMoveId){
         if (this.playerNum == 1) {
-            return {3: 'down'};
+            return 'down';
         }
         else if (this.playerNum == 2) {
-            return {4: 'up'};
+            return 'up';
         }
     }
 }
@@ -44,17 +44,10 @@ class randomBoat {
         this.isManual = false;
     }
 
-    chooseMove(board) {
+    chooseMove(gameState, shipToMoveId) {
         const moves = ['up', 'down', 'right', 'left']
-        var randomMoveOne = moves[Math.floor(Math.random() * moves.length)]
-        var randomMoveTwo = moves[Math.floor(Math.random() * moves.length)]
-        
-        if (this.playerNum == 1) {
-            return {3 : randomMoveOne, 5: randomMoveTwo}
-        }
-        else if (this.playerNum == 2) {
-            return {4 : randomMoveOne, 6: randomMoveTwo}
-        }
+        var randomMove = moves[Math.floor(Math.random() * moves.length)]
+        return randomMove;
     }
 
 }
