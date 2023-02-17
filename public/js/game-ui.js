@@ -116,8 +116,9 @@ submitButton = Document.getElementById("submit")
 submitButton.addEventListener("click",updateMoveValue)
 
 function updateMoveValue(){
+    shipId = parseId()
     inputValue = document.getElementById("inputField").value
-    socket.emit("manualValue",inputValue)
+    socket.emit("manualValue",[shipId,inputValue])
 }
 
 
@@ -126,5 +127,5 @@ function parseId(){
     let text = document.getElementById("text").innerHTML
     let endingIndex = text.search("move ship ") + 10
     let id = parseInt(text.slice(endingIndex))
-    alert(id)
+    return id
 }

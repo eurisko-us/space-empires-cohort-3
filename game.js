@@ -25,14 +25,14 @@ class Game {
             });
         }
     }
-    checkSockets(statement,value){
-        for (let socketId in thisclientSocket){
-            let socket = this.clientSockets[socketId]
-            
-            socket.on
-            }
-    }
 
+
+    manualvalue(value){
+        //value is an array of [shipId,moveValue]
+        let shipId = value[0]
+        let moveValue = value[1]
+        this.allEntities[shipId].moveValue = moveValue
+    }
 
     start() {
         this.broadcastMessage('gameState', {

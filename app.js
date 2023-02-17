@@ -35,6 +35,10 @@ io.on('connection', (socket) => {
         console.log('Client socket disconnected: ' + socketId);
         delete clientSockets[socketId];
     });
+
+    socket.on('playerResponse', (playerResponseObject) => {
+        game.playerResponse = playerResponseObject;
+    })
 });
 
 http.listen(3003, () => {
