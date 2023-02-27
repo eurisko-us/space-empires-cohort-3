@@ -266,7 +266,11 @@ class Game {
 
     combatPhase() {
         let combatSpaces = this.findCombatSpaces();
-        this.shipScreening(combatSpaces);
+        for (const combatCoords of combatSpaces) {
+            let combatOrder = this.createCombatOrder(combatCoords);
+            let shipToAttack = combatOrder[0];
+            // get move
+        }
     }
 
     findCombatSpaces() {
@@ -287,10 +291,6 @@ class Game {
                         if (firstShipPlayerNum != currentShipPlayerNum) {
                             combatSpaces.push([i, j]);
                         }
-
-
-
-
                     }
                 }
             }
@@ -299,25 +299,8 @@ class Game {
         return combatSpaces;
     }
 
-    shipScreening(combatSpaces) {
-        for (const combatSpace of combatSpaces) {
-            let ships = this.state.board.spaces[combatSpace[0]][combatSpace[1]];
-            let numPlayerOneShips = ships.filter(ship => ship.playerNum == 1).length;
-            let numPlayerTwoShips = ships.filter(ship => ship.playerNum == 2).length;
-            if (numPlayerOneShips == numPlayerTwoShips) {
-                return;
-            }
-
-            else if (numPlayerOneShips > numPlayerTwoShips) {
-                // player one can opt to move ships off 
-
-            }
-
-            else {
-                // player two can opt to move ships off
-            }
-
-        }
+    createCombatOrder(combatCoords) {
+        return [...this.board.spaces[combatCoords[0]][combatCoords[1]]].sort((a, b) => {this.allEntities[a].attack - this.allEntities[b].attack});
     }
 }
 
