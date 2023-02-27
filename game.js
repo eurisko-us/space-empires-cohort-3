@@ -41,8 +41,8 @@ class Game {
                 return winner;
             }
 
-            
-            
+
+
             //this.refreshBoard();
             this.makeMove();
             this.refreshBoard();
@@ -82,14 +82,14 @@ class Game {
             else if (ship.playerNum == 2 && (ship.position[0] == 0) && (ship.position[1] == 3)) {
                 console.log('Player 2 won!');
                 return 2;
-          }
+            }
         }
         return 0;
     }
     generateInitialGameState() {
         let board = {
             numRows: 7,
-            numCols: 7, 
+            numCols: 7,
             spaces: [],
         };
 
@@ -100,8 +100,8 @@ class Game {
 
         var allEntities = {};
 
-        for(let i = 0; i < board.numRows; i++) {
-            for(let j = 0; j < board.numCols; j++) {
+        for (let i = 0; i < board.numRows; i++) {
+            for (let j = 0; j < board.numCols; j++) {
                 board.spaces[i][j] = [];
                 if (i === 0 && j === 3) {
                     var p1Colony = new Colony(1, true, 1);
@@ -217,12 +217,12 @@ class Game {
 
     refreshBoard() {
         var b = [];
-        for (let i = 0; i < 7; i++){
+        for (let i = 0; i < 7; i++) {
             var a = [[], [], [], [], [], [], []];
             b.push(a);
         }
         this.state.board.spaces = b
-        for (var i = 0; i < Object.keys(this.state.allEntities).length; i++){
+        for (var i = 0; i < Object.keys(this.state.allEntities).length; i++) {
             let pos = this.state.allEntities[i + 1].position;
             this.state.board.spaces[pos[0]][pos[1]].push(i + 1);
         }
@@ -279,9 +279,9 @@ class Game {
             }
 
             else {
-              // player two can opt to move ships off
+                // player two can opt to move ships off
             }
-            
+
         }
     }
 }
