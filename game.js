@@ -12,6 +12,8 @@ class Game {
         this.numRows = 7;
         this.numCols = 7;
 
+        this.playerResponse = null;
+
         this.state = this.generateInitialGameState();
 
         for (let socketId in this.clientSockets) {
@@ -23,6 +25,14 @@ class Game {
             });
         }
     }
+    checkSockets(statement,value){
+        for (let socketId in thisclientSocket){
+            let socket = this.clientSockets[socketId]
+            
+            socket.on
+            }
+    }
+
 
     start() {
         this.broadcastMessage('gameState', {
@@ -30,9 +40,10 @@ class Game {
         });
 
 
+
         let gameInterval = setInterval(() => {
             let winner = this.checkWinState();
-
+            //socket stuff
             if (winner != 0) {
                 clearInterval(gameInterval);
                 this.broadcastMessage('winner', {
@@ -41,16 +52,22 @@ class Game {
                 return winner;
             }
 
+            if (this.state.phase == 'movement') {
+                this.movementPhase();
+                this.refreshBoard();
+            } else if (this.state.phase == 'combat') {
+                // this.combatPhase();
+                console.log('combat phase was triggered');
+                this.state.phase = 'movement';
+            }
 
 
             //this.refreshBoard();
-            this.makeMove();
             this.refreshBoard();
             this.broadcastMessage('gameState', {
                 gameState: this.state
             });
 
-            this.combatPhase();
 
             // for (let socketId in this.clientSockets) {
             //     let socket = this.clientSockets[socketId];
@@ -89,6 +106,7 @@ class Game {
     generateInitialGameState() {
         let board = {
             numRows: 7,
+            numCols: 7,
             numCols: 7,
             spaces: [],
         };
@@ -136,81 +154,98 @@ class Game {
         let gameState = {
             board,
             playerToMove: 1,
-            allEntities: allEntities
+            allEntities: allEntities,
+            phase: 'movement'
         }
         console.log(allEntities)
         return gameState;
     }
 
-    makeMove() {
+    movementPhase() {
+        let player = this.players[this.state.playerToMove - 1];
+        let move;
+        let shipIds = Array.from(Object.keys(this.state.allEntities), string => parseInt(string));
+        let shipsToMove = shipIds.filter(id => this.state.allEntities[id].movable && this.state.allEntities[id].playerNum == this.state.playerToMove && !this.state.allEntities[id].chosenMove);
+        let shipToMoveId = shipsToMove[0];
+        let shipToMove = this.state.allEntities[shipToMoveId]; 
 
-        let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
+        if (!shipToMoveId) {
+            let shipIdsOfCurrentPlayer = shipIds.filter(id => this.state.allEntities[id].playerNum == this.state.playerToMove);
+            for (const shipId of shipIdsOfCurrentPlayer) {
+                this.state.allEntities[shipId].chosenMove = null;
+                // resetting chosen move
+            }
+            this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
+            this.playerResponse = null;
 
-        this.moveShips(move);
-        //Making sure that colonies dont move`
-        // let board = this.state["board"]["spaces"]
-        // if (board[0][3][0] instanceof Colony != True) {
-        //     console.log("Error : Colony moved")
-        // }
-        // //making sure that ships don't duplicate
-        // let numentity = 0
-        // for (let i = 0; i < board.length; i++) {
-        //     for (let j = 0; j < board[0].length; j++) {
-        //         for (let k = 0; k < board[0][0]; k++) {
-        //             if (board[i][j][k] != null) {
-        //                 numentity += 1
-        //             }
-        //         }
-        //     }
-        // }
-        // if (numentity != this.allEntities.length) {
-        //     console.log("Error: Duplicating ships occurred")
-        // }
-        //making sure that ships don't teleport
+            if (this.state.playerToMove == 1) {
+                this.state.phase = 'combat';
+            }
 
+            return
+        }
 
-        this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
+        this.state.shipToMoveId = shipToMoveId;
 
-        //REBUGING
-        // console.log(this.state["board"])
+        console.log('ship to move: ' + shipToMoveId);
+        if (player.isManual) {
+            this.displayPrompt(`Enter moves for Player ${this.playerToMove}`);
+            move = this.playerReponse;
+        } else {
+            move = player.chooseMove(this.state.board);
+            shipToMove.chosenMove = move;
+            console.log(move);
+        }
+        
+        if (shipToMove.chosenMove) {
+            this.moveShip(move);
+            console.log('ships were moved');
+            this.playerResponse = null;
+        }
 
-
+        console.log(`move was ${move}`);
 
     }
 
-    moveShips(moves) {
-        let shipIds = Object.keys(moves);
-        for (let i = 0; i < shipIds.length; i++) {
-            let ship = this.state.allEntities[shipIds[i]];
-            let move = moves[shipIds[i]];
+    makeMove() {
+        let move = this.players[this.state.playerToMove - 1].chooseMove(this.state.board);
 
-            if (!ship.moveable) return;
-            if (ship.playerNum != this.state.playerToMove) return;
+        this.moveShip(move);
 
-            if (move === "left") {
-                if (ship.position[1] != 0) {
-                    ship.position[1] -= 1;
-                } else {
-                    console.log("You can't move left!");
-                }
-            } else if (move === "right") {
-                if (ship.position[1] != 6) {
-                    ship.position[1] += 1;
-                } else {
-                    console.log("You can't move right!");
-                }
-            } else if (move === "up") {
-                if (ship.position[0] != 0) {
-                    ship.position[0] -= 1;
-                } else {
-                    console.log("You can't move up!");
-                }
-            } else if (move === "down") {
-                if (ship.position[0] != 6) {
-                    ship.position[0] += 1;
-                } else {
-                    console.log("You can't move down!");
-                }
+        this.state.playerToMove = [2, 1][this.state.playerToMove - 1];
+
+    }
+
+
+    moveShip(moveObj) {
+        if (!this.state.shipToMoveId in moveObj) return;
+
+        let move = moveObj[this.state.shipToMoveId];
+        let ship = this.state.allEntities[this.state.shipToMoveId];
+
+        if (move === "left") {
+            if (ship.position[1] != 0) {
+                ship.position[1] -= 1;
+            } else {
+                console.log("You can't move left!");
+            }
+        } else if (move === "right") {
+            if (ship.position[1] != 6) {
+                ship.position[1] += 1;
+            } else {
+                console.log("You can't move right!");
+            }
+        } else if (move === "up") {
+            if (ship.position[0] != 0) {
+                ship.position[0] -= 1;
+            } else {
+                console.log("You can't move up!");
+            }
+        } else if (move === "down") {
+            if (ship.position[0] != 6) {
+                ship.position[0] += 1;
+            } else {
+                console.log("You can't move down!");
             }
         }
     }

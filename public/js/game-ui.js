@@ -7,9 +7,11 @@ socket.on('gameState', (data) => {
     updateUI(data.gameState);
 });
 
-
 socket.on('winner', (data) => {
     alert('Player ' + data.winner + ' won!');
+})
+socket.on("getID", ()=>{
+    parseId()
 })
 
 function updateUI(gameState) {
@@ -17,18 +19,18 @@ function updateUI(gameState) {
     updateBoard(state);
 }
 
-
 function updateBoard(state) {
     let board = state.board;
+    let boardWrapper = document.getElementById("boardWrapper");
     // Delete board table if it already exists because we're just going to recreate it
     let boardTable = document.getElementById('board');
     if (boardTable) {
-        document.body.removeChild(boardTable);
+        boardWrapper.removeChild(boardTable);
     }
 
     boardTable = document.createElement('table');
     boardTable.id = 'board';
-    document.body.appendChild(boardTable);
+    boardWrapper.appendChild(boardTable);
     
     
     for(let i = 0; i < board.numRows; i++) {
@@ -79,37 +81,50 @@ function updateBoard(state) {
             
                     
             if (spaceValue === 1) {
-                cell.style.backgroundColor = 'blue';
-                cell.innerText = "Player 1: " + state.allEntities[space[0]].shipType;
+                cell.style.backgroundColor = 'green';
+                cell.innerText = "Player 1: " + state.allEntities[space[0]].shipType + " (" + space[0] + ")";
 
             } else if (spaceValue === 2)  {
                 cell.style.backgroundColor = 'red';
-                cell.innerText = "Player 2: " + state.allEntities[space[0]].shipType;
+                cell.innerText = "Player 2: " + state.allEntities[space[0]].shipType + " (" + space[0] + ")";
 
             } else if (spaceValue == 3) {
-                cell.style.backgroundColor = 'lightskyblue';
-                cell.innerText = "Player 1: Colony";
+                cell.style.backgroundColor = 'lightgreen';
+                cell.innerText = "Player 1: Colony (1)";
                 
             } else if (spaceValue == 4) {
                 cell.style.backgroundColor = 'crimson';
-                cell.innerText = "Player 2: Colony";
+                cell.innerText = "Player 2: Colony (2)";
 
             } else if (spaceValue === 5) {
                 cell.style.backgroundColor = 'orange';
                 var text = "";
                 for (let i = 0; i < space.length; i++){
-                    text = text + "Player " + state.allEntities[space[i]].playerNum + ": " + state.allEntities[space[i]].shipType+ "      ";
+                    text = text + "Player " + state.allEntities[space[i]].playerNum + ": " + state.allEntities[space[i]].shipType + " (" + space[i] + ") \n";
                 }
                 cell.innerText = text;
 
             } else if (spaceValue == 0) {
                 cell.style.backgroundColor = 'black';
-
-            } else {
-                cell.style.backgroundColor = 'yellow';
-
             }
         }
     }
 
+}
+
+submitButton = Document.getElementById("submit")
+submitButton.addEventListener("click",updateMoveValue)
+
+function updateMoveValue(){
+    inputValue = document.getElementById("inputField").value
+    socket.emit("manualValue",inputValue)
+}
+
+
+
+function parseId(){
+    let text = document.getElementById("text").innerHTML
+    let endingIndex = text.search("move ship ") + 10
+    let id = parseInt(text.slice(endingIndex))
+    alert(id)
 }

@@ -1,10 +1,11 @@
 class Ship{
   constructor(playerNum, entityId, shipType) {
-      this.moveable = true;
+      this.movable = true;
       this.playerNum = playerNum;
       this.id = entityId;
       this.entityType = "ship";
       this.shipType = shipType;
+      this.chosenMove = null;
       if (this.playerNum == 1) {
           this.position = [0,3];
       } else {

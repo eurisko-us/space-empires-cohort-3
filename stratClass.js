@@ -1,7 +1,7 @@
 var rls = require('readline-sync');
 /*class Strat{
-    constructor(pid){
-        this.pid = pid;
+    constructor(playerNum){
+        this.playerNum = playerNum;
     }
     chooseMove(board){
         //move_obj = {ship_id : [0, 1], movement : [["w","d","w"],["w","d","w"]]}
@@ -24,22 +24,24 @@ var rls = require('readline-sync');
 */
 
 class dumbBoat{
-    constructor(pid){
-        this.pid = pid;
+    constructor(playerNum){
+        this.playerNum = playerNum;
+        this.isManual = false;
     }
     chooseMove(board){
-        if (this.pid == 1) {
+        if (this.playerNum == 1) {
             return {3: 'down'};
         }
-        else if (this.pid == 2) {
+        else if (this.playerNum == 2) {
             return {4: 'up'};
         }
     }
 }
 
 class randomBoat {
-    constructor(pid) {
-        this.pid = pid;
+    constructor(playerNum) {
+        this.playerNum = playerNum;
+        this.isManual = false;
     }
 
     chooseMove(board) {
@@ -47,10 +49,10 @@ class randomBoat {
         var randomMoveOne = moves[Math.floor(Math.random() * moves.length)]
         var randomMoveTwo = moves[Math.floor(Math.random() * moves.length)]
         
-        if (this.pid == 1) {
+        if (this.playerNum == 1) {
             return {3 : randomMoveOne, 5: randomMoveTwo}
         }
-        else if (this.pid == 2) {
+        else if (this.playerNum == 2) {
             return {4 : randomMoveOne, 6: randomMoveTwo}
         }
     }
@@ -58,8 +60,9 @@ class randomBoat {
 }
 
 class manualBoat{
-    constructor(pid){
-        this.pid = pid
+    constructor(playerNum){
+        this.playerNum = playerNum
+        this.isManual = true;
     }
     chooseMove(board){
         //board is useless here, it's just so you don't get a "too many inputs" error
