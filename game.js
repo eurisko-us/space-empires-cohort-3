@@ -190,7 +190,7 @@ class Game {
         console.log('ship to move: ' + shipToMoveId);
         if (player.isManual) {
             this.displayPrompt(`Enter moves for Player ${this.playerToMove}`);
-            move = this.playerReponse;
+            move = this.playerResponse;
         } else {
             move = player.chooseMove(this.state.board);
             shipToMove.chosenMove = move;
@@ -259,6 +259,7 @@ class Game {
         this.state.board.spaces = b
         for (var i = 0; i < Object.keys(this.state.allEntities).length; i++) {
             let pos = this.state.allEntities[i + 1].position;
+            if (!pos) continue; // it would be dead rn
             this.state.board.spaces[pos[0]][pos[1]].push(i + 1);
         }
         console.table(this.state.board.spaces)
@@ -266,10 +267,40 @@ class Game {
 
     combatPhase() {
         let combatSpaces = this.findCombatSpaces();
-        for (const combatCoords of combatSpaces) {
-            let combatOrder = this.createCombatOrder(combatCoords);
-            let shipToAttack = combatOrder[0];
-            // get move
+        if (!combatSpaces) this.state.phase = "movement";
+        let combatCoords = combatSpaces[0];
+        let combatOrder = this.createCombatOrder(combatCoords);
+        let attackerShipId = combatOrder[0];
+        let attackerShipObj = this.state.allEntities[attackerShipId];
+        let player = this.state.allEntities[attackerShipId].playerNum;
+        let shipObjectsOnSpace = this.state.board[combatCoords[0]][combatCoords[1]].map((id) => this.state.allEntities[id]);
+
+        let shipIdToTarget;
+
+        if (player.isManual) {
+            this.displayPrompt(`Player ${player}: Enter ship to attack with Ship ${attackerShipId}`);
+            shipIdToTarget = this.playerResponse;
+        } else {
+            shipIdToTarget = player.chooseShipToAttack(shipObjectsOnSpace);
+            attackerShipObj.chosenAttack = shipIdToTarget;
+        }
+    }
+
+    attackerVsDefender(attackShipId,defenderShipId) {
+        diceRoll = Math.ceiling(Math.random() * 10);
+        attackerStrength = this.state.allEntities[attackShipId].attack; 
+        defenderStrength = this.state.allEntities[defenderShipId].defense; 
+        if (attackerStrength - defenderStrength >= diceRoll) {
+            this.state.allEntities[defenderShipId].hp--;
+            this.checkIfShipIsDead(defenderShipId);
+        }
+    }
+
+    checkIfShipIsDead(shipId) {
+        let shipObj = this.state.allEntities[shipId];
+        if (shipObj.hp == 0) {
+            shipObj.moveable = false;
+            shipObj.position = null;
         }
     }
 
@@ -300,7 +331,7 @@ class Game {
     }
 
     createCombatOrder(combatCoords) {
-        return [...this.board.spaces[combatCoords[0]][combatCoords[1]]].sort((a, b) => {this.allEntities[a].attack - this.allEntities[b].attack});
+        return [...this.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => {this.allEntities[a].attack - this.allEntities[b].attack});
     }
 }
 

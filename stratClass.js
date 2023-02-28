@@ -57,6 +57,14 @@ class randomBoat {
         }
     }
 
+    chooseShipToAttack(shipObjectsOnSpace) {
+        let randomShip = shipObjectsOnSpace[Math.floor(Math.random() * shipObjectsOnSpace.length)];
+        while (randomShip.playerNum != this.playerNum) {
+            randomShip = shipObjectsOnSpace[Math.floor(Math.random() * shipObjectsOnSpace.length)];
+        }
+        return randomShip.id;
+    }
+
 }
 
 class manualBoat{
