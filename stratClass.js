@@ -30,12 +30,21 @@ class dumbBoat{
     }
     chooseMove(board){
         if (this.playerNum == 1) {
-            return {3: 'down'};
+            return {3: 'down', 5:'down'};
         }
         else if (this.playerNum == 2) {
-            return {4: 'up'};
+            return {4: 'up', 6: 'up'};
         }
     }
+
+    chooseShipToAttack(shipObjectsOnSpace) {
+        let randomShip = shipObjectsOnSpace[Math.floor(Math.random() * shipObjectsOnSpace.length)];
+        while (randomShip.playerNum == this.playerNum) {
+            randomShip = shipObjectsOnSpace[Math.floor(Math.random() * shipObjectsOnSpace.length)];
+        }
+        return randomShip.id;
+    }
+
 }
 
 class randomBoat {

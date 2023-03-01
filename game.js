@@ -42,9 +42,9 @@ class Game {
 
 
         let gameInterval = setInterval(() => {
-            let winner = this.checkWinState();
+            let winner = this.winner;
             //socket stuff
-            if (winner != 0) {
+            if (winner) {
                 clearInterval(gameInterval);
                 this.broadcastMessage('winner', {
                     winner: winner
@@ -54,16 +54,13 @@ class Game {
 
             if (this.state.phase == 'movement') {
                 this.movementPhase();
-                this.refreshBoard();
             } else if (this.state.phase == 'combat') {
-                // this.combatPhase();
-                console.log('combat phase was triggered');
-                this.state.phase = 'movement';
+                this.combatPhase();
+                this.refreshBoard();
+                // this.state.phase = 'movement';
             }
 
 
-            //this.refreshBoard();
-            this.refreshBoard();
             this.broadcastMessage('gameState', {
                 gameState: this.state
             });
@@ -76,7 +73,7 @@ class Game {
             //         gameState: this.state
             //     });
             // }
-        }, 100);
+        }, 200);
     }
 
     broadcastMessage(msgName, msgJSON) {
@@ -91,6 +88,7 @@ class Game {
         console.log('Checking win state');
         for (var i = 0; i < Object.keys(this.state.allEntities).length; i++) {
             let ship = this.state.allEntities[i + 1];
+            if (!ship.position) continue;
             if (ship.playerNum == 1 && (ship.position[0] == 6) && (ship.position[1] == 3)) {
                 console.log("Player 1 won!");
                 return 1;
@@ -155,9 +153,10 @@ class Game {
             board,
             playerToMove: 1,
             allEntities: allEntities,
-            phase: 'movement'
-        }
-        console.log(allEntities)
+            phase: 'movement',
+            winner: null
+        };
+        console.log(allEntities);
         return gameState;
     }
 
@@ -179,6 +178,7 @@ class Game {
             this.playerResponse = null;
 
             if (this.state.playerToMove == 1) {
+                console.table(this.state.board.spaces);
                 this.state.phase = 'combat';
             }
 
@@ -200,6 +200,8 @@ class Game {
         if (shipToMove.chosenMove) {
             this.moveShip(move);
             console.log('ships were moved');
+            this.refreshBoard();
+            this.checkWinState();
             this.playerResponse = null;
         }
 
@@ -262,35 +264,47 @@ class Game {
             if (!pos) continue; // it would be dead rn
             this.state.board.spaces[pos[0]][pos[1]].push(i + 1);
         }
-        console.table(this.state.board.spaces)
+        // console.table(this.state.board.spaces);
     }
 
     combatPhase() {
         let combatSpaces = this.findCombatSpaces();
-        if (!combatSpaces) this.state.phase = "movement";
+        if (combatSpaces.length == 0) {
+            console.log('no combat spaces foudn! moving on to movement');
+            this.state.phase = "movement";
+            return;
+        }
         let combatCoords = combatSpaces[0];
         let combatOrder = this.createCombatOrder(combatCoords);
         let attackerShipId = combatOrder[0];
         let attackerShipObj = this.state.allEntities[attackerShipId];
         let player = this.state.allEntities[attackerShipId].playerNum;
-        let shipObjectsOnSpace = this.state.board[combatCoords[0]][combatCoords[1]].map((id) => this.state.allEntities[id]);
+        let playerObj = this.players[player - 1];
+        let shipObjectsOnSpace = this.state.board.spaces[combatCoords[0]][combatCoords[1]].map((id) => this.state.allEntities[id]);
 
         let shipIdToTarget;
 
-        if (player.isManual) {
+        if (playerObj.isManual) {
             this.displayPrompt(`Player ${player}: Enter ship to attack with Ship ${attackerShipId}`);
             shipIdToTarget = this.playerResponse;
         } else {
-            shipIdToTarget = player.chooseShipToAttack(shipObjectsOnSpace);
+            shipIdToTarget = playerObj.chooseShipToAttack(shipObjectsOnSpace);
             attackerShipObj.chosenAttack = shipIdToTarget;
+        }
+
+        if (shipIdToTarget) {
+            this.attackerVsDefender(attackerShipId, shipIdToTarget);
+            this.playerResponse = null;
         }
     }
 
-    attackerVsDefender(attackShipId,defenderShipId) {
-        diceRoll = Math.ceiling(Math.random() * 10);
-        attackerStrength = this.state.allEntities[attackShipId].attack; 
-        defenderStrength = this.state.allEntities[defenderShipId].defense; 
+    attackerVsDefender(attackShipId, defenderShipId) {
+        console.log(`${attackShipId} attempting to attack ${defenderShipId}`);
+        let diceRoll = Math.ceil(Math.random() * 10);
+        let attackerStrength = this.state.allEntities[attackShipId].attack; 
+        let defenderStrength = this.state.allEntities[defenderShipId].defense; 
         if (attackerStrength - defenderStrength >= diceRoll) {
+            console.log('hit');
             this.state.allEntities[defenderShipId].hp--;
             this.checkIfShipIsDead(defenderShipId);
         }
@@ -301,10 +315,13 @@ class Game {
         if (shipObj.hp == 0) {
             shipObj.moveable = false;
             shipObj.position = null;
+            console.log(`Ship with id ${shipId} died!`);
         }
     }
 
     findCombatSpaces() {
+
+        // clean this up probably
 
         let combatSpaces = [];
 
@@ -312,16 +329,19 @@ class Game {
             for (let j = 0; j < this.state.board.numCols; j++) {
 
                 let currentBoardSpace = this.state.board.spaces[i][j];
-                if (currentBoardSpace.length > 1) {
-                    let firstShipId = currentBoardSpace[0];
-                    let firstShipPlayerNum = this.state.allEntities[firstShipId]
-                    for (let k = 1; k < currentBoardSpace.length; k++) {
+                let shipsOnCurrentBoardSpace = currentBoardSpace.filter((id) => this.state.allEntities[id].entityType == "ship");
+                // console.log(`number of ships on current board space: ${shipsOnCurrentBoardSpace.length}`);
+                if (shipsOnCurrentBoardSpace.length <= 1) continue;
+                let firstShipId = shipsOnCurrentBoardSpace[0];
+                let firstShipPlayerNum = this.state.allEntities[firstShipId].playerNum;
+                for (let k = 1; k < shipsOnCurrentBoardSpace.length; k++) {
 
-                        let currentShipId = currentBoardSpace[k];
-                        let currentShipPlayerNum = this.state.allEntities[currentShipId];
-                        if (firstShipPlayerNum != currentShipPlayerNum) {
-                            combatSpaces.push([i, j]);
-                        }
+                    let currentShipId = shipsOnCurrentBoardSpace[k];
+                    let currentShipPlayerNum = this.state.allEntities[currentShipId].playerNum;
+                    if (firstShipPlayerNum != currentShipPlayerNum) {
+                        console.log(`Combat space found: ${[i, j]} with ships: ${shipsOnCurrentBoardSpace}`);
+                        combatSpaces.push([i, j]);
+                        break;
                     }
                 }
             }
@@ -331,7 +351,7 @@ class Game {
     }
 
     createCombatOrder(combatCoords) {
-        return [...this.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => {this.allEntities[a].attack - this.allEntities[b].attack});
+        return [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => {this.state.allEntities[a].attack - this.state.allEntities[b].attack});
     }
 }
 
