@@ -201,7 +201,7 @@ class Game {
             this.moveShip(move);
             console.log('ships were moved');
             this.refreshBoard();
-            this.checkWinState();
+            this.winner = this.checkWinState();
             this.playerResponse = null;
         }
 
@@ -224,6 +224,8 @@ class Game {
 
         let move = moveObj[this.state.shipToMoveId];
         let ship = this.state.allEntities[this.state.shipToMoveId];
+
+        if (!ship.movable) return;
 
         if (move === "left") {
             if (ship.position[1] != 0) {
@@ -276,8 +278,10 @@ class Game {
         }
         let combatCoords = combatSpaces[0];
         let combatOrder = this.createCombatOrder(combatCoords);
+        console.log(`combat order: ${combatOrder}`);
         let attackerShipId = combatOrder[0];
         let attackerShipObj = this.state.allEntities[attackerShipId];
+        console.log(`ship to attack: ${attackerShipId}`);
         let player = this.state.allEntities[attackerShipId].playerNum;
         let playerObj = this.players[player - 1];
         let shipObjectsOnSpace = this.state.board.spaces[combatCoords[0]][combatCoords[1]].map((id) => this.state.allEntities[id]);
@@ -298,6 +302,13 @@ class Game {
         }
     }
 
+    resetAttackStates(shipIds) {
+        for (const shipId of shipIds) {
+            this.state.allEntities[shipId].chosenAttack = null;
+            console.log(`reset ship ${shipId}`);
+        }
+    }
+
     attackerVsDefender(attackShipId, defenderShipId) {
         console.log(`${attackShipId} attempting to attack ${defenderShipId}`);
         let diceRoll = Math.ceil(Math.random() * 10);
@@ -313,9 +324,10 @@ class Game {
     checkIfShipIsDead(shipId) {
         let shipObj = this.state.allEntities[shipId];
         if (shipObj.hp == 0) {
-            shipObj.moveable = false;
+            shipObj.movable = false;
             shipObj.position = null;
             console.log(`Ship with id ${shipId} died!`);
+            this.refreshBoard();
         }
     }
 
@@ -351,7 +363,12 @@ class Game {
     }
 
     createCombatOrder(combatCoords) {
-        return [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => {this.state.allEntities[a].attack - this.state.allEntities[b].attack});
+        let combatOrder = [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => {this.state.allEntities[a].attack - this.state.allEntities[b].attack});
+        while (combatOrder.length == 0) {
+            this.resetAttackStates(this.state.board.spaces[combatCoords[0]][combatCoords[1]]);
+            combatOrder = [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => { this.state.allEntities[a].attack - this.state.allEntities[b].attack });
+        }
+        return combatOrder;
     }
 }
 
