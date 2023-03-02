@@ -6,6 +6,7 @@ class Ship{
       this.entityType = "ship";
       this.shipType = shipType;
       this.chosenMove = null;
+      this.chosenAttack = null;
       if (this.playerNum == 1) {
           this.position = [0,3];
       } else {
@@ -16,10 +17,12 @@ class Ship{
           this.attack = 3;
           this.defense = 0;
           this.hullSize = 1;
+          this.hp = 1;
       } else if (shipType === "dreadnaught") {
           this.attack = 6;
           this.defense = 3;
           this.hullSize = 3;
+          this.hp = 3;
       }
 
   }
