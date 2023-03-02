@@ -28,4 +28,21 @@ body {
     height: 100%;
 }
 
+.Row{
+    display:flex;
+}
 
+.space{
+    margin:10px;
+    text-align:center;
+    background-color:cyan;
+    color:yellow;
+    width:100px;
+    height:100px;
+}
+
+
+.one,.three, .seven, .nine{
+    background-color: white;
+
+}

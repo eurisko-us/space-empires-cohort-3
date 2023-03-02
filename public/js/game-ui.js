@@ -112,19 +112,30 @@ function updateBoard(state) {
 
 }
 
-submitButton = Document.getElementById("submit")
-submitButton.addEventListener("click",updateMoveValue)
+document.getElementsByClassName("two")[0].addEventListener("click",addAlert,false);
+document.getElementsByClassName("two")[0].myParam = "up"
+document.getElementsByClassName("four")[0].addEventListener("click",addAlert,false)
+document.getElementsByClassName("four")[0].myParam = "left"
+document.getElementsByClassName("five")[0].addEventListener("click",addAlert,false);
+document.getElementsByClassName("five")[0].myParam = "enter"
+document.getElementsByClassName("six")[0].addEventListener("click",addAlert,false);
+document.getElementsByClassName("six")[0].myParam = "right"
+document.getElementsByClassName("eight")[0].addEventListener("click",addAlert,false);
+document.getElementsByClassName("eight")[0].myParam = "down"
 
-function updateMoveValue(){
-    inputValue = document.getElementById("inputField").value
-    socket.emit("manualValue",inputValue)
-}
 
+function addAlert(evt){
+    var button = evt.currentTarget.myParam
+    if(button == "up"){
+        alert("moving up")
+    } else if (button == "left"){
+        alert("moving left")
+    } else if (button == "enter"){
+        alert("HIT HIT")
+    } else if (button == "right"){
+        alert("moving right")
+    } else if (button == "down"){
+        alert("moving down")
+    }
+}   
 
-
-function parseId(){
-    let text = document.getElementById("text").innerHTML
-    let endingIndex = text.search("move ship ") + 10
-    let id = parseInt(text.slice(endingIndex))
-    alert(id)
-}

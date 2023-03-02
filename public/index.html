@@ -5,7 +5,6 @@
 
         <link rel="stylesheet" href="/css/game-ui.css">
         <script src="/socket.io/socket.io.js"></script>
-        <script src="js/game-ui.js"></script>         
     </head>
 
    <body>     
@@ -16,8 +15,25 @@
             <div  style="width:40%; float:left">
                 <div id="text">Player 1, move ship 3</div>
                 <div id="inputSegment">
-                <input id="inputField"> <br>
-                <button id = "submit">submit</button> 
+                    <article class="top Row">
+                        <div class="space one"> </div>
+                        <div class="space two" id="seventynine"> up </div>
+                        <div class ="space three"> </div>
+                    </article>
+
+                    <article class="middle Row">
+                        <div class="space four"> left </div>
+                        <div class="space five"> enter </div>
+                        <div class="space six"> right </div>
+                    </article>
+
+                    <article class="bottom Row">
+                        <div class="space seven"> </div>
+                        <div class="space eight"> down </div>
+                        <div class="space nine"></div>
+                    </article>
+
+
                 </div>
             </div>
             <article id="boardWrapper" style = "width:60%; float:right"> </article>
@@ -26,4 +42,6 @@
         <br style="clear:both;"/>
         <h1> logs and stuff</h1>
    </body>
+    <script src="js/game-ui.js"></script>        
 </html>
+
