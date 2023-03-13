@@ -15,7 +15,7 @@ class Game {
         this.playerResponse = null;
 
         this.state = this.generateInitialGameState();
-
+        console.log("a is ",this.clientSockets)
         for (let socketId in this.clientSockets) {
 
             let socket = this.clientSockets[socketId];
@@ -25,13 +25,7 @@ class Game {
             });
         }
     }
-    checkSockets(statement,value){
-        for (let socketId in thisclientSocket){
-            let socket = this.clientSockets[socketId]
-            
-            socket.on
-            }
-    }
+
 
 
     start() {
@@ -86,7 +80,6 @@ class Game {
             socket.emit(msgName, msgJSON);
         }
     }
-
     checkWinState() {
         console.log('Checking win state');
         for (var i = 0; i < Object.keys(this.state.allEntities).length; i++) {
@@ -114,7 +107,9 @@ class Game {
         for (let i = 0; i < board.numRows; i++) {
             board.spaces[i] = new Array(board.numCols);
         }
+{
 
+}
         var allEntities = {};
 
         for (let i = 0; i < board.numRows; i++) {

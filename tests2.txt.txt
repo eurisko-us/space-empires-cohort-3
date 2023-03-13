@@ -1,0 +1,67 @@
+{
+  '1': Colony {
+    movable: false,
+    playerNum: 1,
+    id: 1,
+    entityType: 'colony',
+    shipType: 'colony',
+    position: [ 0, 3 ]
+  },
+  '2': Colony {
+    movable: false,
+    playerNum: 2,
+    id: 2,
+    entityType: 'colony',
+    shipType: 'colony',
+    position: [ 6, 3 ]
+  },
+  '3': Ship {
+    movable: true,
+    playerNum: 1,
+    id: 3,
+    entityType: 'ship',
+    shipType: 'scout',
+    chosenMove: null,
+    position: [ 0, 3 ],
+    attack: 3,
+    defense: 0,
+    hullSize: 1
+  },
+  '4': Ship {
+    movable: true,
+    playerNum: 2,
+    id: 4,
+    entityType: 'ship',
+    shipType: 'scout',
+    chosenMove: null,
+    position: [ 6, 3 ],
+    attack: 3,
+    defense: 0,
+    hullSize: 1
+  },
+  '5': Ship {
+    movable: true,
+    playerNum: 1,
+    id: 5,
+    entityType: 'ship',
+    shipType: 'dreadnaught',
+    chosenMove: null,
+    position: [ 0, 3 ],
+    attack: 6,
+    defense: 3,
+    hullSize: 3
+  },
+  '6': Ship {
+    movable: true,
+    playerNum: 2,
+    id: 6,
+    entityType: 'ship',
+    shipType: 'dreadnaught',
+    chosenMove: null,
+    position: [ 6, 3 ],
+    attack: 6,
+    defense: 3,
+    hullSize: 3
+  }
+}
+a is  {}

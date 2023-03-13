@@ -17,7 +17,6 @@ app.get('/', function (req, res) {
 });
 
 let clientSockets = {};
-
 io.on('connection', (socket) => {
     let socketId = socket.id;
     clientSockets[socketId] = socket;
@@ -25,11 +24,14 @@ io.on('connection', (socket) => {
     console.log('Client socket connected:' + socket.id);
 
     if (Object.keys(clientSockets).length == 1) {
-        game.start();
+        //game.start();
     }
 /*     game.broadcastMessage('gameState', {
         gameState: game.state
     }); */
+    socket.on("moveMade", (data)=>{
+        console.log(data);
+    })
 
     socket.on('disconnect', () => {
         console.log('Client socket disconnected: ' + socketId);
@@ -41,17 +43,7 @@ http.listen(3003, () => {
     console.log('Listening on *:3003');
 });
 
-// while (Object.keys(clientSockets).length == 0) {
-//     return
-// }
 
 const game = new Game(clientSockets, randomBoat, randomBoat);
-// if (Object.keys(clientSockets).length == 0) {
-// setTimeout(() => {
-//     console.log("didn't connect")
-// }, 200);
-// }
-// else {
-//     game.start();
-// }
+
 

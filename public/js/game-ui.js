@@ -127,14 +127,19 @@ document.getElementsByClassName("eight")[0].myParam = "down"
 function addAlert(evt){
     var button = evt.currentTarget.myParam
     if(button == "up"){
+        socket.emit("moveMade", "up");
         alert("moving up")
     } else if (button == "left"){
+        socket.emit("moveMade", "left");
         alert("moving left")
     } else if (button == "enter"){
+        socket.emit("moveMade", "enter");
         alert("HIT HIT")
     } else if (button == "right"){
+        socket.emit("moveMade", "right");
         alert("moving right")
     } else if (button == "down"){
+        socket.emit("moveMade", "down");
         alert("moving down")
     }
 }   
