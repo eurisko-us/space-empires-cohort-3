@@ -7,6 +7,12 @@ socket.on('gameState', (data) => {
     updateUI(data.gameState);
 });
 
+socket.on('logUpdate', (log) => {
+    let logWrapper = document.getElementById("logWrapper")
+    let p = document.createElement("p")
+    p.innerText = log
+    logWrapper.append(p)
+})
 socket.on('winner', (data) => {
     alert('Player ' + data.winner + ' won!');
 })
