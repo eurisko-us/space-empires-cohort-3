@@ -15,7 +15,7 @@ class Game {
         this.playerResponse = null;
 
         this.state = this.generateInitialGameState();
-        console.log("a is ",this.clientSockets)
+
         for (let socketId in this.clientSockets) {
 
             let socket = this.clientSockets[socketId];
@@ -25,7 +25,13 @@ class Game {
             });
         }
     }
+    checkSockets(statement, value) {
+        for (let socketId in thisclientSocket) {
+            let socket = this.clientSockets[socketId]
 
+            socket.on
+        }
+    }
 
 
     start() {
@@ -77,6 +83,7 @@ class Game {
             socket.emit(msgName, msgJSON);
         }
     }
+
     checkWinState() {
         console.log('Checking win state');
         for (var i = 0; i < Object.keys(this.state.allEntities).length; i++) {
@@ -106,9 +113,7 @@ class Game {
         for (let i = 0; i < board.numRows; i++) {
             board.spaces[i] = new Array(board.numCols);
         }
-{
 
-}
         var allEntities = {};
 
         for (let i = 0; i < board.numRows; i++) {
@@ -161,7 +166,7 @@ class Game {
         let shipIds = Array.from(Object.keys(this.state.allEntities), string => parseInt(string));
         let shipsToMove = shipIds.filter(id => this.state.allEntities[id].movable && this.state.allEntities[id].playerNum == this.state.playerToMove && !this.state.allEntities[id].chosenMove);
         let shipToMoveId = shipsToMove[0];
-        let shipToMove = this.state.allEntities[shipToMoveId]; 
+        let shipToMove = this.state.allEntities[shipToMoveId];
 
         if (!shipToMoveId) {
             let shipIdsOfCurrentPlayer = shipIds.filter(id => this.state.allEntities[id].playerNum == this.state.playerToMove);
@@ -191,7 +196,7 @@ class Game {
             shipToMove.chosenMove = move;
             console.log(move);
         }
-        
+
         if (shipToMove.chosenMove) {
             this.moveShip(move);
             console.log('ships were moved');
@@ -219,34 +224,41 @@ class Game {
 
         let move = moveObj[this.state.shipToMoveId];
         let ship = this.state.allEntities[this.state.shipToMoveId];
+        let moveWasSuccessful = false;
 
         if (!ship.movable) return;
 
         if (move === "left") {
             if (ship.position[1] != 0) {
                 ship.position[1] -= 1;
+                moveWasSuccessful = true;
             } else {
                 console.log("You can't move left!");
             }
         } else if (move === "right") {
             if (ship.position[1] != 6) {
                 ship.position[1] += 1;
+                moveWasSuccessful = true;
             } else {
                 console.log("You can't move right!");
             }
         } else if (move === "up") {
             if (ship.position[0] != 0) {
                 ship.position[0] -= 1;
+                moveWasSuccessful = true;
             } else {
                 console.log("You can't move up!");
             }
         } else if (move === "down") {
             if (ship.position[0] != 6) {
                 ship.position[0] += 1;
+                moveWasSuccessful = true;
             } else {
                 console.log("You can't move down!");
             }
         }
+
+        this.log(this.state.shipToMoveId, 'move', move, moveWasSuccessful);
     }
 
     refreshBoard() {
@@ -307,13 +319,15 @@ class Game {
     attackerVsDefender(attackShipId, defenderShipId) {
         console.log(`${attackShipId} attempting to attack ${defenderShipId}`);
         let diceRoll = Math.ceil(Math.random() * 10);
-        let attackerStrength = this.state.allEntities[attackShipId].attack; 
-        let defenderStrength = this.state.allEntities[defenderShipId].defense; 
-        if (attackerStrength - defenderStrength >= diceRoll) {
+        let attackerStrength = this.state.allEntities[attackShipId].attack;
+        let defenderStrength = this.state.allEntities[defenderShipId].defense;
+        let attackWasSuccessful = attackerStrength - defenderStrength >= diceRoll;
+        if (attackWasSuccessful) {
             console.log('hit');
             this.state.allEntities[defenderShipId].hp--;
             this.checkIfShipIsDead(defenderShipId);
         }
+        this.log(attackShipId, 'attack', defenderShipId, attackWasSuccessful);
     }
 
     checkIfShipIsDead(shipId) {
@@ -357,13 +371,27 @@ class Game {
         return combatSpaces;
     }
 
+    checkIfSpace
+
     createCombatOrder(combatCoords) {
-        let combatOrder = [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => {this.state.allEntities[a].attack - this.state.allEntities[b].attack});
+        let combatOrder = [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => { this.state.allEntities[a].attack - this.state.allEntities[b].attack });
         while (combatOrder.length == 0) {
             this.resetAttackStates(this.state.board.spaces[combatCoords[0]][combatCoords[1]]);
             combatOrder = [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => { this.state.allEntities[a].attack - this.state.allEntities[b].attack });
         }
         return combatOrder;
+    }
+
+    log(ship, actionType, action, successful) {
+        if (actionType == 'move') {
+            console.log(`Ship ${ship} moved ${action} ${successful ? 'successfully' : 'unsuccessfully'}.`);
+            this.broadcastMessage('logUpdate', `Ship ${ship} moved ${action} ${successful ? 'successfully' : 'unsuccessfully'}.`);
+        }
+
+        else if (actionType == 'attack') {
+            console.log(`Ship ${ship} attacked Ship ${action} ${successful ? 'successfully' : 'unsuccessfully'}.`);
+            this.broadcastMessage('logUpdate', `Ship ${ship} attacked Ship ${action} ${successful ? 'successfully' : 'unsuccessfully'}.`);
+        }
     }
 }
 
