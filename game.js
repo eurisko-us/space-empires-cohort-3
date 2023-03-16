@@ -342,36 +342,34 @@ class Game {
 
     findCombatSpaces() {
 
-        // clean this up probably
-
         let combatSpaces = [];
 
         for (let i = 0; i < this.state.board.numRows; i++) {
             for (let j = 0; j < this.state.board.numCols; j++) {
-
                 let currentBoardSpace = this.state.board.spaces[i][j];
-                let shipsOnCurrentBoardSpace = currentBoardSpace.filter((id) => this.state.allEntities[id].entityType == "ship");
-                // console.log(`number of ships on current board space: ${shipsOnCurrentBoardSpace.length}`);
-                if (shipsOnCurrentBoardSpace.length <= 1) continue;
-                let firstShipId = shipsOnCurrentBoardSpace[0];
-                let firstShipPlayerNum = this.state.allEntities[firstShipId].playerNum;
-                for (let k = 1; k < shipsOnCurrentBoardSpace.length; k++) {
-
-                    let currentShipId = shipsOnCurrentBoardSpace[k];
-                    let currentShipPlayerNum = this.state.allEntities[currentShipId].playerNum;
-                    if (firstShipPlayerNum != currentShipPlayerNum) {
-                        console.log(`Combat space found: ${[i, j]} with ships: ${shipsOnCurrentBoardSpace}`);
-                        combatSpaces.push([i, j]);
-                        break;
-                    }
-                }
+                if (this.checkSpaceForCombat(currentBoardSpace)) combatSpaces.push([i, j]);
             }
         }
 
         return combatSpaces;
     }
 
-    checkIfSpace
+    checkSpaceForCombat(currentBoardSpace) {
+        let shipsOnCurrentBoardSpace = currentBoardSpace.filter((id) => this.state.allEntities[id].entityType == "ship");
+        // console.log(`number of ships on current board space: ${shipsOnCurrentBoardSpace.length}`);
+        if (shipsOnCurrentBoardSpace.length <= 1) return false;
+        let firstShipId = shipsOnCurrentBoardSpace[0];
+        let firstShipPlayerNum = this.state.allEntities[firstShipId].playerNum;
+        for (let i = 1; i < shipsOnCurrentBoardSpace.length; i++) {
+
+            let currentShipId = shipsOnCurrentBoardSpace[i];
+            let currentShipPlayerNum = this.state.allEntities[currentShipId].playerNum;
+            if (firstShipPlayerNum != currentShipPlayerNum) {
+                return true;
+            }
+        }
+
+    }
 
     createCombatOrder(combatCoords) {
         let combatOrder = [...this.state.board.spaces[combatCoords[0]][combatCoords[1]]].filter((id) => !this.state.allEntities[id].chosenAttack).sort((a, b) => { this.state.allEntities[a].attack - this.state.allEntities[b].attack });
