@@ -361,7 +361,6 @@ class Game {
         let firstShipId = shipsOnCurrentBoardSpace[0];
         let firstShipPlayerNum = this.state.allEntities[firstShipId].playerNum;
         for (let i = 1; i < shipsOnCurrentBoardSpace.length; i++) {
-
             let currentShipId = shipsOnCurrentBoardSpace[i];
             let currentShipPlayerNum = this.state.allEntities[currentShipId].playerNum;
             if (firstShipPlayerNum != currentShipPlayerNum) {
